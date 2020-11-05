@@ -14,7 +14,11 @@ before_deploy:
   - pip install awscli
   - npm install -g serverless@1.79.0
 deploy:
-  provider: script
-  script: yarn --frozen-lockfile && yarn deploy:staging
-  on:
-    branch: develop
+  - provider: script
+    script: yarn --frozen-lockfile && yarn deploy:staging
+    on:
+      branch: develop
+  - provider: script
+    script: yarn --frozen-lockfile && yarn deploy:prod
+    on:
+      branch: master
