@@ -1,0 +1,8 @@
+# serverless.yml
+commit-composer:
+  component: "./serverless"
+  inputs:
+    bucketName: commit-composer-prod
+    name:
+      defaultLambda: commit-composer-default-prod
+      apiLambda: commit-composer-api-prod

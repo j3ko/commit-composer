@@ -1,0 +1,51 @@
+// TODO: Changing values in this file does not get hot-loaded
+@import (css) url('//fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+@import '~antd/lib/style/themes/default.less';
+
+@darker: #1d3557;
+@dark: #457b9d;
+@light: #a8dadc;
+@lighter: #f1faee;
+@error: #e63946;
+
+@primary-color: @darker; // primary color for all components
+@info-color: @dark;
+@error-color: @error; // error state color
+
+@layout-header-height: 64px;
+@layout-footer-height: 64px;
+
+@facebook-color: #3b5998;
+@twitter-color: #1da1f2;
+@youtube-color: #ff0000;
+@instagram-color: #c32aa3;
+@pintrest-color: #bd081c;
+@linkedin-color: #007bb5;
+@google-color: #4285f4;
+@snapchat-color: #fffc00;
+@whatsapp-color: #25d366;
+@tumblr-color: #35465d;
+@reddit-color: #ff4500;
+@tiktok-color: #010101;
+
+:export {
+  darker: @darker;
+  dark: @dark;
+  light: @light;
+  lighter: @lighter;
+  error: @error;
+
+  primaryColor: @primary-color;
+  linkColor: @link-color;
+  successColor: @success-color;
+  warningColor: @warning-color;
+  errorColor: @error-color;
+
+  layoutHeaderHeight: unit(@layout-header-height);
+  layoutFooterHeight: unit(@layout-footer-height);
+
+  alertSuccessBorderColor: @alert-success-border-color;
+  alertInfoBorderColor: @alert-info-border-color;
+  alertWarningBorderColor: @alert-warning-border-color;
+  alertErrorBorderColor: @alert-error-border-color;
+}

@@ -1,0 +1,13 @@
+diff --git a/node_modules/@commitlint/resolve-extends/lib/index.js b/node_modules/@commitlint/resolve-extends/lib/index.js
+index cf6a178..03d34d3 100644
+--- a/node_modules/@commitlint/resolve-extends/lib/index.js
++++ b/node_modules/@commitlint/resolve-extends/lib/index.js
+@@ -52,7 +52,7 @@ function loadExtends(config = {}, context = {}) {
+                 path: `./${path_1.default.relative(process.cwd(), resolvedParserPreset)}`
+                     .split(path_1.default.sep)
+                     .join('/'),
+-                parserOpts: require(resolvedParserPreset),
++                parserOpts: load(resolvedParserPreset),
+             };
+             ctx.parserPreset = parserPreset;
+             config.parserPreset = parserPreset;
