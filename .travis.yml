@@ -18,7 +18,9 @@ deploy:
     script: yarn --frozen-lockfile && yarn deploy:staging
     on:
       branch: develop
+      tags: true
   - provider: script
     script: yarn --frozen-lockfile && yarn deploy:prod
     on:
       branch: master
+      tags: true
