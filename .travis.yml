@@ -17,4 +17,4 @@ deploy:
   provider: script
   script: yarn deploy:staging
   on:
-    branches: develop
+    branch: develop
