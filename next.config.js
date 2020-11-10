@@ -44,6 +44,8 @@ module.exports = withPlugins(
         }),
       );
 
+      config.module.unknownContextCritical = false;
+
       config.node = {
         __dirname: true,
       };

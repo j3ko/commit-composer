@@ -2,11 +2,11 @@
 const path = require('path');
 
 const loadCommitlint = function (pkg) {
-  return require(`@commitlint/${pkg}/index.js`);
+  return require(`./node_modules/@commitlint/${pkg}/index.js`);
 };
 
 const loadConventional = function (pkg) {
-  return require(`conventional-changelog${pkg}/index.js`);
+  return require(`./node_modules/conventional-changelog${pkg}/index.js`);
 };
 
 const shim = function (pkg) {
@@ -17,7 +17,7 @@ const shim = function (pkg) {
 
   if (commitlintIdx > -1) {
     result = loadCommitlint(segments[commitlintIdx + 1]);
-  } else if (match.length > 0) {
+  } else if (match && match.length > 0) {
     result = loadConventional(match.groups.suffix);
   }
 
