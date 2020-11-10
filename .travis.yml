@@ -4,6 +4,8 @@ node_js:
 cache:
   directories:
   - node_modules
+git:
+  quiet: true
 branches:
   only:
     - master
