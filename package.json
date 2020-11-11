@@ -17,7 +17,8 @@
     "build:download:staging": "aws s3 sync s3://j3ko-serverless-state/commit-composer/staging/.serverless .serverless --delete",
     "release": "standard-version --commit-all",
     "postinstall": "patch-package --use-yarn",
-    "build:clean": "rimraf .next && rimraf .serverless_nextjs && rimraf .serverless"
+    "build:clean": "rimraf .next && rimraf .serverless_nextjs && rimraf .serverless",
+    "build:reset": "npm run build:clean && rimraf node_modules"
   },
   "dependencies": {
     "@commitlint/config-angular": "^11.0.0",

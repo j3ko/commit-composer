@@ -1,9 +1,6 @@
 language: node_js
 node_js:
   - 12
-cache:
-  directories:
-  - node_modules
 git:
   quiet: true
 branches:
@@ -11,7 +8,7 @@ branches:
     - master
     - develop
 script:
-  - yarn --frozen-lockfile
+  - yarn --frozen-lockfile --silent
   - yarn lint
   - yarn build
 before_deploy:
@@ -21,11 +18,11 @@ before_deploy:
   - npm install -g serverless@1.79.0
 deploy:
   - provider: script
-    script: yarn --frozen-lockfile && yarn deploy:staging
+    script: yarn --frozen-lockfile --silent && yarn deploy:staging && yarn build:reset
     on:
       branch: develop
   - provider: script
-    script: yarn --frozen-lockfile && yarn deploy:prod
+    script: yarn --frozen-lockfile --silent && yarn deploy:prod && yarn build:reset
     on:
       branch: master
       tags: true
