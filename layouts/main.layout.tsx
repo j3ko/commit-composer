@@ -2,6 +2,7 @@ import { Col, Layout, Row } from 'antd';
 import BuildEnvironmentComponent from 'components/common/build-environment.component';
 import HeaderLinksComponent from 'components/common/header-links.component';
 import Head from 'next/head';
+import Link from 'next/link';
 import { FunctionComponent } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 
@@ -19,6 +20,7 @@ const useStyles = (theme: CommitComposerTheme) =>
     },
     titleContainer: {
       color: theme.lighter,
+      cursor: 'pointer',
     },
     buttonContainer: {
       textAlign: 'right',
@@ -49,7 +51,9 @@ export const MainLayout: FunctionComponent<HookProps> = ({ children }) => {
         <Header className={classes.header}>
           <Row justify="space-between">
             <Col>
-              <h1 className={classes.titleContainer}>commit-composer.dev</h1>
+              <Link href="/">
+                <h1 className={classes.titleContainer}>commit-composer.dev</h1>
+              </Link>
             </Col>
             <Col className={classes.buttonContainer}>
               <HeaderLinksComponent></HeaderLinksComponent>

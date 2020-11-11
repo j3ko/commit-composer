@@ -13,12 +13,12 @@ export default class HeaderLinksComponent extends React.Component<Props, State> 
   render(): JSX.Element {
     return (
       <Space>
-        <Link href="http://www.github.com">
+        <Link href="/changelog">
           <Tooltip title="Changelog">
             <Button ghost shape="circle" icon={<FaBullhorn />} />
           </Tooltip>
         </Link>
-        <Link href="http://www.github.com">
+        <Link href="https://github.com/j3ko/commit-composer">
           <Tooltip title="GitHub">
             <Button ghost shape="circle" icon={<FaGithub />} />
           </Tooltip>
