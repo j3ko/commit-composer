@@ -34,7 +34,7 @@
     "classnames": "^2.2.6",
     "cosmiconfig": "^7.0.0",
     "less": "^3.12.2",
-    "next": "9.5.3",
+    "next": "9.5.4",
     "next-compose-plugins": "^2.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
