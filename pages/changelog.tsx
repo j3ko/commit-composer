@@ -28,7 +28,7 @@ export class Changelog extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     fetch(`/CHANGELOG.md`).then((x) => {
       if (x.status === 200) {
         x.text().then((markdown) => this.setState({ markdown }));

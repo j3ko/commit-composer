@@ -1,22 +1,30 @@
-import 'styles/styles.css';
-
 import { MainLayout } from 'layouts/main.layout';
 import App, { AppProps } from 'next/app';
 import { IconContext } from 'react-icons';
 import { ThemeProvider } from 'react-jss';
 import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
+import { AnyAction, applyMiddleware, createStore, Store } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
+import { persistStore } from 'redux-persist';
+import { PersistPartial } from 'redux-persist/es/persistReducer';
+import { PersistGate } from 'redux-persist/integration/react';
 import { PlainAction } from 'redux-typed-actions';
 import { AppState } from 'state';
 import rootEpic from 'state/epics';
 import rootReducer from 'state/reducers';
+import 'styles/styles.css';
 import variables from 'styles/variables.module.less';
+
 
 const theme: CommitComposerTheme = { ...variables };
 
 const epicMiddleware = createEpicMiddleware<PlainAction, PlainAction, AppState>();
-const store = createStore(rootReducer, applyMiddleware(epicMiddleware));
+const store: Store<AppState & PersistPartial, AnyAction> = createStore(
+  rootReducer,
+  applyMiddleware(epicMiddleware),
+);
+
+const persistor = persistStore(store);
 
 epicMiddleware.run(rootEpic);
 
@@ -38,11 +46,13 @@ class MyApp extends App<AppProps> {
 
     return (
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <IconContext.Provider value={{ className: 'anticon' }}>
-            {getLayout(<Component {...pageProps} />)}
-          </IconContext.Provider>
-        </ThemeProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <IconContext.Provider value={{ className: 'anticon' }}>
+              {getLayout(<Component {...pageProps} />)}
+            </IconContext.Provider>
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     );
   }
