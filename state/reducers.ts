@@ -6,24 +6,15 @@ import storage from 'redux-persist/lib/storage';
 import { PlainAction } from 'redux-typed-actions';
 import { AppState } from 'state';
 
-const editorFilter = createBlacklistFilter(
-  'editor',
-  ['loading']
-);
+const editorFilter = createBlacklistFilter('editor', ['loading']);
 
-const configFilter = createBlacklistFilter(
-  'config',
-  ['loading']
-);
+const configFilter = createBlacklistFilter('config', ['loading']);
 
 const persistConfig = {
   key: 'root',
   storage,
-  transforms: [
-    editorFilter,
-    configFilter,
-  ],
-  debounce: 250
+  transforms: [editorFilter, configFilter],
+  debounce: 250,
 };
 
 const rootReducer = (state: AppState = new AppState(), action: PlainAction): AppState => {

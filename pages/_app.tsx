@@ -1,3 +1,5 @@
+import 'styles/styles.css';
+
 import { MainLayout } from 'layouts/main.layout';
 import App, { AppProps } from 'next/app';
 import { IconContext } from 'react-icons';
@@ -12,9 +14,7 @@ import { PlainAction } from 'redux-typed-actions';
 import { AppState } from 'state';
 import rootEpic from 'state/epics';
 import rootReducer from 'state/reducers';
-import 'styles/styles.css';
 import variables from 'styles/variables.module.less';
-
 
 const theme: CommitComposerTheme = { ...variables };
 
