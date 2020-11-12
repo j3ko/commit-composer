@@ -48,7 +48,12 @@ export class CommitLintLib {
   static async parseConfig(configuration: UserConfig): Promise<QualifiedConfig> {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const opts = { require: shim } as any;
+      const opts = {
+        require: shim,
+        cwd: './public',
+        file: 'empty-config.js',
+      } as any;
+
       load(configuration, opts)
         .then((config) => resolve(config))
         .catch((e) => reject(e));
