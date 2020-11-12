@@ -48,11 +48,18 @@ export class CommitLintLib {
   static async parseConfig(configuration: UserConfig): Promise<QualifiedConfig> {
     return new Promise((resolve, reject) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const opts = {
-        require: shim,
-        cwd: './public',
-        file: 'empty-config.js',
-      } as any;
+      let opts = { require: shim } as any;
+
+      try {
+        if (fs.existsSync('./.commitlintrc.js')) {
+          opts = Object.assign(opts, {
+            cwd: './',
+            file: '.commitlintrc.empty.js',
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
 
       load(configuration, opts)
         .then((config) => resolve(config))
