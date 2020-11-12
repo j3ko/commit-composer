@@ -3,7 +3,7 @@ import React from 'react';
 import { FaMagic } from 'react-icons/fa';
 import withStyles from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
-import { AppState, EditorState } from 'state';
+import { AppState, ConfigState, EditorState } from 'state';
 
 import { EditorFormatAction } from './state/editor.action';
 
@@ -14,6 +14,7 @@ const styles = {
 export interface OwnProps {}
 export interface ReduxProps {
   editor: EditorState;
+  config: ConfigState;
 }
 export interface DispatchProps {
   editorFormatted: () => void;
@@ -23,11 +24,11 @@ export interface State {}
 
 class EditorFormatComponent extends React.Component<Props, State> {
   render(): JSX.Element {
-    const { editor } = this.props;
+    const { editor, config } = this.props;
 
     return (
       <Button
-        disabled={!editor.validationResult}
+        disabled={!editor.validationResult || config.loading || editor.loading}
         icon={<FaMagic />}
         onClick={() => this.props.editorFormatted()}>
         Auto Format
@@ -37,8 +38,8 @@ class EditorFormatComponent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { editor, config } = state;
+  return { editor, config };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
