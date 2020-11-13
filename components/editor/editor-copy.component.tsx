@@ -78,7 +78,6 @@ class EditorCopyComponent extends React.Component<Props, State> {
     return (
       <Dropdown.Button
         disabled={config.loading || editor.loading}
-        type="primary"
         onClick={() => this.handleButtonClick()}
         overlay={menu}
         trigger={['click']}>
