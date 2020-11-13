@@ -26,7 +26,7 @@ export interface State {}
 class ConfigSwitcherComponent extends React.Component<Props, State> {
   componentDidMount() {
     const { config } = this.props;
-    if (!Boolean(config?.configValue)) {
+    if (!config?.configValue) {
       this.setConfigPreset(ConfigPreset.Conventional);
     } else {
       this.props.configUpdated(config.configValue);
