@@ -18,16 +18,10 @@ export class CommitMessageLib {
     return result;
   }
 
-  private static fixLineLength(text: string, length: number): string {
-    const newline = '\r\n';
-    const regex = new RegExp(`(.{${length || 0}})`, 'g');
-    const arr = text.split(/\r\n|\r|\n/);
-    const result = [];
-    (arr || []).forEach((x) => {
-      let temp = x.replace(regex, `$1${newline}`);
-      temp = temp.replace(/(\r\n|\r|\n)$/, '');
-      result.push(...temp.split(/\r\n|\r|\n/));
-    });
-    return result.join(newline);
+  private static fixLineLength(text: string, length: number) {
+    return (text || '').replace(
+      new RegExp(`(?![^\\n]{1,${length}}$)([^\\n]{1,${length}})\\s`, 'g'),
+      '$1\r\n',
+    );
   }
 }

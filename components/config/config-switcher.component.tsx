@@ -28,6 +28,8 @@ class ConfigSwitcherComponent extends React.Component<Props, State> {
     const { config } = this.props;
     if (!config?.configValue) {
       this.setConfigPreset(ConfigPreset.Conventional);
+    } else {
+      this.props.configUpdated(config.configValue);
     }
   }
 

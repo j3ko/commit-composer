@@ -3,7 +3,7 @@ import React from 'react';
 import { FaCopy } from 'react-icons/fa';
 import withStyles from 'react-jss';
 import { connect } from 'react-redux';
-import { AppState, EditorState } from 'state';
+import { AppState, ConfigState, EditorState } from 'state';
 
 const styles = {
   root: {},
@@ -12,6 +12,7 @@ const styles = {
 export interface OwnProps {}
 export interface ReduxProps {
   editor: EditorState;
+  config: ConfigState;
 }
 export interface DispatchProps {}
 type Props = OwnProps & ReduxProps & DispatchProps;
@@ -51,7 +52,7 @@ class EditorCopyComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { editor } = this.props;
+    const { editor, config } = this.props;
     const disabled = !editor.validationResult;
 
     const menu = (
@@ -76,7 +77,7 @@ class EditorCopyComponent extends React.Component<Props, State> {
 
     return (
       <Dropdown.Button
-        type="primary"
+        disabled={config.loading || editor.loading}
         onClick={() => this.handleButtonClick()}
         overlay={menu}
         trigger={['click']}>
@@ -87,8 +88,8 @@ class EditorCopyComponent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { editor, config } = state;
+  return { editor, config };
 }
 
 export default connect<ReduxProps, DispatchProps, OwnProps, AppState>(

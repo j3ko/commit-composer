@@ -1,7 +1,21 @@
 import configReducer from 'components/config/state/config.reducer';
 import editorReducer from 'components/editor/state/editor.reducer';
+import { persistReducer } from 'redux-persist';
+import { createBlacklistFilter } from 'redux-persist-transform-filter';
+import storage from 'redux-persist/lib/storage';
 import { PlainAction } from 'redux-typed-actions';
 import { AppState } from 'state';
+
+const editorFilter = createBlacklistFilter('editor', ['loading']);
+
+const configFilter = createBlacklistFilter('config', ['loading']);
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  transforms: [editorFilter, configFilter],
+  debounce: 250,
+};
 
 const rootReducer = (state: AppState = new AppState(), action: PlainAction): AppState => {
   return {
@@ -10,4 +24,6 @@ const rootReducer = (state: AppState = new AppState(), action: PlainAction): App
   };
 };
 
-export default rootReducer;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default persistedReducer;

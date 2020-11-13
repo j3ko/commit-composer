@@ -19,6 +19,7 @@ const styles = (theme: CommitComposerTheme) => ({
   closed: {
     height: 0,
     border: 'none !important',
+    padding: 0,
   },
   invalid: {
     border: `1px solid ${theme.alertErrorBorderColor}`,
@@ -62,7 +63,9 @@ class ConfigEditorComponent extends React.Component<Props, State> {
           [classes.closed]: !config.isOpen,
         })}>
         <textarea
-          className={classes.text}
+          className={classNames(classes.text, {
+            [classes.closed]: !config.isOpen,
+          })}
           value={this.props.config.configValue}
           onChange={(e) => this.props.configUpdated(e.currentTarget.value)}></textarea>
         <ConfigValidationComponent config={config}></ConfigValidationComponent>
