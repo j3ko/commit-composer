@@ -8,6 +8,7 @@ branches:
   only:
     - master
     - develop
+    - /^v\d+\.\d+\.\d+.*$/
 script:
   - yarn --frozen-lockfile --silent
   - yarn lint
