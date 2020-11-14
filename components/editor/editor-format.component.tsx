@@ -11,7 +11,9 @@ const styles = {
   root: {},
 };
 
-export interface OwnProps {}
+export interface OwnProps {
+  className?: string;
+}
 export interface ReduxProps {
   editor: EditorState;
   config: ConfigState;
@@ -24,10 +26,11 @@ export interface State {}
 
 class EditorFormatComponent extends React.Component<Props, State> {
   render(): JSX.Element {
-    const { editor, config } = this.props;
+    const { editor, config, className } = this.props;
 
     return (
       <Button
+        className={className}
         disabled={!editor.validationResult || config.loading || editor.loading}
         icon={<FaMagic />}
         onClick={() => this.props.editorFormatted()}>

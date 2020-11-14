@@ -1,11 +1,11 @@
-import { Col, Row, Space } from 'antd';
+import { Col, Row } from 'antd';
+import classNames from 'classnames';
 import ConfigEditorComponent from 'components/config/config-editor.component';
-import ConfigSwitcherComponent from 'components/config/config-switcher.component';
-import EditorCopyComponent from 'components/editor/editor-copy.component';
-import EditorFormatComponent from 'components/editor/editor-format.component';
+import EditorActionsComponent from 'components/editor/editor-actions.component';
 import EditorSummaryComponent from 'components/editor/editor-summary.component';
 import EditorValidationComponent from 'components/editor/editor-validation.component';
 import EditorComponent from 'components/editor/editor.component';
+import UseBreakpointHook from 'hooks/use-breakpoint.hook';
 import { MainLayout } from 'layouts/main.layout';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
@@ -18,7 +18,9 @@ const styles = {
     paddingTop: 20,
     height: 200,
   },
-  summaryContainer: {},
+  summaryContainer: {
+    padding: '0 0 3px 0',
+  },
   buttonContainer: {
     textAlign: 'right',
   },
@@ -30,6 +32,9 @@ const styles = {
   uploadContainer: {
     paddingTop: 20,
     textAlign: 'right',
+  },
+  center: {
+    textAlign: 'center',
   },
 };
 
@@ -70,20 +75,30 @@ export class Index extends React.Component<Props, State> {
 
         <Row>
           <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
-          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.summaryContainer}>
-            <EditorSummaryComponent></EditorSummaryComponent>
-          </Col>
+          <UseBreakpointHook>
+            {(screen) => {
+              return (
+                <Col
+                  xs={24}
+                  sm={22}
+                  md={18}
+                  lg={16}
+                  xl={16}
+                  className={classNames(classes.summaryContainer, {
+                    [classes.center]: !screen.sm,
+                  })}>
+                  <EditorSummaryComponent></EditorSummaryComponent>
+                </Col>
+              );
+            }}
+          </UseBreakpointHook>
           <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
         </Row>
 
         <Row>
           <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
           <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.buttonContainer}>
-            <Space>
-              <ConfigSwitcherComponent></ConfigSwitcherComponent>
-              <EditorFormatComponent></EditorFormatComponent>
-              <EditorCopyComponent></EditorCopyComponent>
-            </Space>
+            <EditorActionsComponent></EditorActionsComponent>
           </Col>
           <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
         </Row>
