@@ -63,7 +63,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
       <Dropdown overlay={menu} trigger={['click']}>
         <Button>
           <span aria-label="gitmoji" role="img">
-            🎉
+            🎉&nbsp;
           </span>{' '}
           &nbsp;:gitmoji: <AiOutlineDown />
         </Button>
