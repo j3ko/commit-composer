@@ -1,6 +1,15 @@
 import { Commit, QualifiedConfig } from '@commitlint/types';
 
+import { GitmojiDefinition } from './gitmoji';
+
 export class CommitMessageLib {
+  static setGitmoji(message: string, gitmoji: GitmojiDefinition): string {
+    return (message || '').replace(
+      /^(.+?(\(.+?\))*?:)?([ ]*:\w+:[ ]*)?([\s]*)?([\s\S]*)?/,
+      `$1$2 ${gitmoji.markdown} $5`,
+    );
+  }
+
   static format(commit: Commit, ruleset: QualifiedConfig): string {
     const { raw, body, footer } = commit;
     let result = raw;

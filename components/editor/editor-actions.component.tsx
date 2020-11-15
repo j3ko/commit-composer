@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import ConfigSwitcherComponent from 'components/config/config-switcher.component';
 import EditorCopyComponent from 'components/editor/editor-copy.component';
 import EditorFormatComponent from 'components/editor/editor-format.component';
+import GitmojiPickerComponent from 'components/editor/gitmoji-picker.component';
 import { UseBreakpointHook } from 'hooks/use-breakpoint.hook';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
@@ -10,7 +11,7 @@ import withStyles, { WithStylesProps } from 'react-jss';
 const styles = {
   fullWidth: {
     width: '100%',
-    '& button:first-of-type': {
+    '& button:first-child, .ant-btn-group, .ant-btn-group button:first-child': {
       width: '100%',
     },
   },
@@ -35,18 +36,10 @@ class EditorActionsComponent extends React.Component<Props, State> {
               className={classNames({
                 [classes.fullWidth]: !screen.sm,
               })}>
-              <ConfigSwitcherComponent
-                className={classNames({
-                  [classes.fullWidth]: !screen.sm,
-                })}></ConfigSwitcherComponent>
-              <EditorFormatComponent
-                className={classNames({
-                  [classes.fullWidth]: !screen.sm,
-                })}></EditorFormatComponent>
-              <EditorCopyComponent
-                className={classNames({
-                  [classes.fullWidth]: !screen.sm,
-                })}></EditorCopyComponent>
+              <GitmojiPickerComponent></GitmojiPickerComponent>
+              <ConfigSwitcherComponent></ConfigSwitcherComponent>
+              <EditorFormatComponent></EditorFormatComponent>
+              <EditorCopyComponent></EditorCopyComponent>
             </Space>
           );
         }}

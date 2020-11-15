@@ -5,10 +5,15 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 import { requestValidation } from 'shared/api';
 import { AppState } from 'state';
 
-import { EditorFormatAction, EditorLoadAction, EditorUpdatedAction } from './editor.action';
+import {
+  EditorFormatAction,
+  EditorLoadAction,
+  EditorUpdatedAction,
+  GitmojiSelectAction,
+} from './editor.action';
 
 export const updateValidation: Epic<PlainAction, PlainAction, AppState> = (action$, store$) =>
-  action$.ofType(EditorUpdatedAction.type, EditorFormatAction.type).pipe(
+  action$.ofType(EditorUpdatedAction.type, EditorFormatAction.type, GitmojiSelectAction.type).pipe(
     debounceTime(250),
     switchMap(() =>
       concat(

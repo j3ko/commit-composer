@@ -1,5 +1,6 @@
 import { Commit, LintResultDTO, LintRuleOutcome } from 'dtos/lint-result.dto';
 import { QualifiedConfig, RulesetResultDTO } from 'dtos/ruleset-result.dto';
+import { GitmojiDefinition } from 'shared/gitmoji';
 
 export enum ConfigPreset {
   Conventional = '@commitlint/config-conventional',
@@ -15,6 +16,7 @@ export class EditorState {
   editorValue?: string = 'chore: validate commit message';
   validationResult?: ValidationResult = new ValidationResult();
   loading = false;
+  gitmoji?: GitmojiDefinition;
 }
 
 export class ConfigState {
