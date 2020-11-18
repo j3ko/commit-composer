@@ -85,7 +85,7 @@ export class Index extends React.Component<Props, State> {
                   lg={16}
                   xl={16}
                   className={classNames(classes.summaryContainer, {
-                    [classes.center]: !screen.sm,
+                    [classes.center]: !screen.md,
                   })}>
                   <EditorSummaryComponent></EditorSummaryComponent>
                 </Col>

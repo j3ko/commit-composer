@@ -7,6 +7,7 @@ import {
   EditorLoadAction,
   EditorUpdatedAction,
   GitmojiSelectAction,
+  TypeSelectAction,
   ValidationUpdatedAsync,
 } from './editor.action';
 
@@ -56,6 +57,13 @@ const editorReducer = (
       ...state,
       editorValue,
       gitmoji: action.payload,
+    };
+  } else if (TypeSelectAction.is(action)) {
+    const editorValue = CommitMessageLib.setType(state.editorValue, action.payload);
+
+    result = {
+      ...state,
+      editorValue,
     };
   }
 

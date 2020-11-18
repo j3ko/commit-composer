@@ -1,6 +1,6 @@
 import { Commit, LintResultDTO, LintRuleOutcome } from 'dtos/lint-result.dto';
 import { QualifiedConfig, RulesetResultDTO } from 'dtos/ruleset-result.dto';
-import { GitmojiDefinition } from 'shared/gitmoji';
+import { GitmojiDefinition } from 'shared/presets/gitmojis';
 
 export enum ConfigPreset {
   Conventional = '@commitlint/config-conventional',
