@@ -16,7 +16,6 @@ const styles = (theme: CommitComposerTheme) => ({
     width: '100%',
   },
   text: {
-    // border: '1px solid black',
     border: 'none',
     display: 'block',
     height: '100%',

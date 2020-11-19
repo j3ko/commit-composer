@@ -1,5 +1,6 @@
 import { Col, Row } from 'antd';
 import classNames from 'classnames';
+import WriteUpComponent from 'components/common/write-up.component';
 import ConfigEditorComponent from 'components/config/config-editor.component';
 import EditorActionsComponent from 'components/editor/editor-actions.component';
 import EditorSummaryComponent from 'components/editor/editor-summary.component';
@@ -26,8 +27,9 @@ const styles = {
   },
   configContainer: {
     paddingTop: 20,
-    height: 200,
-    width: '100%',
+  },
+  writeUpContainer: {
+    paddingTop: 20,
   },
   uploadContainer: {
     paddingTop: 20,
@@ -107,6 +109,14 @@ export class Index extends React.Component<Props, State> {
           <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
           <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.configContainer}>
             <ConfigEditorComponent></ConfigEditorComponent>
+          </Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+        </Row>
+
+        <Row>
+          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.writeUpContainer}>
+            <WriteUpComponent></WriteUpComponent>
           </Col>
           <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
         </Row>
