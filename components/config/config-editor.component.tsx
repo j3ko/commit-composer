@@ -63,6 +63,7 @@ class ConfigEditorComponent extends React.Component<Props, State> {
           [classes.closed]: !config.isOpen,
         })}>
         <textarea
+          rows={8}
           className={classNames(classes.text, {
             [classes.closed]: !config.isOpen,
           })}

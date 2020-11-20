@@ -1,6 +1,19 @@
 import { Commit, QualifiedConfig } from '@commitlint/types';
 
+import { GitmojiDefinition } from './presets/gitmojis';
+import { TypeDefinition } from './presets/types';
+
 export class CommitMessageLib {
+  static SUBJECT_REGEX = /^((?![ ]*:).+?(\(.+?\))*?:)?([ ]*)(:\w+:[ ]*)?([\s]*)?([\s\S]*)?/;
+
+  static setType(message: string, type: TypeDefinition): string {
+    return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, `${type.key}: $4$5$6`);
+  }
+
+  static setGitmoji(message: string, gitmoji: GitmojiDefinition): string {
+    return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, `$1 ${gitmoji.markdown} $6`);
+  }
+
   static format(commit: Commit, ruleset: QualifiedConfig): string {
     const { raw, body, footer } = commit;
     let result = raw;

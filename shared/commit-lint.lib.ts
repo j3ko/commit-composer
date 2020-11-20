@@ -6,6 +6,7 @@ import { cosmiconfig } from 'cosmiconfig';
 import crypto from 'crypto';
 import { LintConfigDTO } from 'dtos/lint-config.dto';
 import fs from 'fs';
+import json5 from 'json5';
 
 import shim from '../require-shim';
 
@@ -21,6 +22,11 @@ export class CommitLintLib {
 
       if (!fs.existsSync(TEMP_DIR)) {
         fs.mkdirSync(TEMP_DIR);
+      }
+
+      if (config.type === 'json') {
+        const file = json5.parse(config.file);
+        config.file = JSON.stringify(file);
       }
 
       fs.writeFile(path, config.file, function (err) {

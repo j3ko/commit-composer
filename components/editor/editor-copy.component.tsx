@@ -9,7 +9,9 @@ const styles = {
   root: {},
 };
 
-export interface OwnProps {}
+export interface OwnProps {
+  className?: string;
+}
 export interface ReduxProps {
   editor: EditorState;
   config: ConfigState;
@@ -52,7 +54,7 @@ class EditorCopyComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { editor, config } = this.props;
+    const { editor, config, className } = this.props;
     const disabled = !editor.validationResult;
 
     const menu = (
@@ -77,6 +79,7 @@ class EditorCopyComponent extends React.Component<Props, State> {
 
     return (
       <Dropdown.Button
+        className={className}
         disabled={config.loading || editor.loading}
         onClick={() => this.handleButtonClick()}
         overlay={menu}

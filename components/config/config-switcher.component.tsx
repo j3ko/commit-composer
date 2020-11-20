@@ -12,7 +12,9 @@ const styles = {
   root: {},
 };
 
-export interface OwnProps {}
+export interface OwnProps {
+  className?: string;
+}
 export interface ReduxProps {
   config: ConfigState;
 }
@@ -44,6 +46,7 @@ class ConfigSwitcherComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
+    const { className } = this.props;
     const menu = (
       <Menu onClick={({ key }) => this.handleClick(key)}>
         {Object.keys(ConfigPreset).map((key) => (
@@ -53,7 +56,7 @@ class ConfigSwitcherComponent extends React.Component<Props, State> {
     );
 
     return (
-      <Dropdown overlay={menu} trigger={['click']}>
+      <Dropdown className={className} overlay={menu} trigger={['click']}>
         <Button icon={<FaWrench />}>
           Configuration <AiOutlineDown />
         </Button>
