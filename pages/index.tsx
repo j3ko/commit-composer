@@ -60,23 +60,23 @@ export class Index extends React.Component<Props, State> {
     return (
       <>
         <Row>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
-          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.validationContainer}>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
+          <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.validationContainer}>
             <EditorValidationComponent></EditorValidationComponent>
           </Col>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>
 
         <Row>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
-          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.editContainer}>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
+          <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.editContainer}>
             <EditorComponent></EditorComponent>
           </Col>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>
 
         <Row>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
           <UseBreakpointHook>
             {(screen) => {
               return (
@@ -85,7 +85,7 @@ export class Index extends React.Component<Props, State> {
                   sm={22}
                   md={18}
                   lg={16}
-                  xl={16}
+                  xl={14}
                   className={classNames(classes.summaryContainer, {
                     [classes.center]: !screen.md,
                   })}>
@@ -94,31 +94,31 @@ export class Index extends React.Component<Props, State> {
               );
             }}
           </UseBreakpointHook>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>
 
         <Row>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
-          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.buttonContainer}>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
+          <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.buttonContainer}>
             <EditorActionsComponent></EditorActionsComponent>
           </Col>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>
 
         <Row>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
-          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.configContainer}>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
+          <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.configContainer}>
             <ConfigEditorComponent></ConfigEditorComponent>
           </Col>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>
 
         <Row>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
-          <Col xs={24} sm={22} md={18} lg={16} xl={16} className={classes.writeUpContainer}>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
+          <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.writeUpContainer}>
             <WriteUpComponent></WriteUpComponent>
           </Col>
-          <Col xs={0} sm={1} md={2} lg={4} xl={4}></Col>
+          <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>
       </>
     );

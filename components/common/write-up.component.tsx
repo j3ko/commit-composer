@@ -36,9 +36,9 @@ class WriteUpComponent extends React.Component<Props, State> {
             <a href="https://commitlint.js.org" target="_blank" rel="noreferrer">
               commitlint
             </a>{' '}
-            and inspired by many structured commit message <a href="#resources">resources</a>,
-            commit-composer aims to help construct beautifully structured commit messages for your
-            git repository.
+            and inspired by many conventional commit <a href="#resources">resources</a>,
+            commit-composer aims to bridge the gap between your favorite Git GUI and beautifully
+            structured commit messages for your repository.
           </Typography.Paragraph>
         </Row>
 
