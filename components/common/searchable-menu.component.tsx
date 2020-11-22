@@ -81,7 +81,12 @@ class SearchableMenuComponent extends React.Component<Props, State> {
 
   focus(): void {
     if (this.state.searchInputRef.current) {
-      this.state.searchInputRef.current.focus();
+      setTimeout(() => {
+        const x = window.scrollX;
+        const y = window.scrollY;
+        this.state.searchInputRef.current.focus();
+        window.scrollTo(x, y);
+      }, 100);
     }
   }
 
