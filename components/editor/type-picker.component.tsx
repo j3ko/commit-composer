@@ -1,4 +1,5 @@
-import { Button, Dropdown, Menu, Space, Typography } from 'antd';
+import { Button, Dropdown } from 'antd';
+import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
 import { FaTags } from 'react-icons/fa';
@@ -10,18 +11,8 @@ import { AppState, EditorState } from 'state';
 import { TypeSelectAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
-  root: {},
   menu: {
-    overflowY: 'auto',
-    overflowX: 'hidden',
     maxHeight: 250,
-    [`@media only screen and (max-width: ${theme.screenMD})`]: {
-      width: '100%',
-      minWidth: 'unset',
-    },
-  },
-  description: {
-    fontSize: 12,
   },
   overlay: {
     [`@media only screen and (max-width: ${theme.screenMD})`]: {
@@ -39,35 +30,50 @@ export interface DispatchProps {
   typeSelected: (type: TypeDefinition) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
-export interface State {}
+export interface State {
+  focus: boolean;
+}
 
 class TypePickerComponent extends React.Component<Props, State> {
+  constructor(props: Readonly<Props>) {
+    super(props);
+    this.state = {
+      focus: false,
+    };
+  }
+
   handleClick(key: string): void {
     const { typeSelected } = this.props;
     const type = TYPES.find((x) => x.key === key);
     typeSelected(type);
+    this.handleVisibilityChange(false);
+  }
+
+  handleVisibilityChange(focus: boolean): void {
+    this.setState({ focus });
   }
 
   render(): JSX.Element {
     const { classes } = this.props;
-
     const menu = (
-      <Menu onClick={({ key }) => this.handleClick(`${key}`)} className={classes.menu}>
-        {TYPES.map((x) => (
-          <Menu.Item key={x.key}>
-            <Space size={1} direction="vertical">
-              <Typography.Text>{x.key}:</Typography.Text>
-              <Typography.Text type="secondary" className={classes.description}>
-                {x.description}&nbsp;
-              </Typography.Text>
-            </Space>
-          </Menu.Item>
-        ))}
-      </Menu>
+      <SearchableMenuComponent
+        focus={this.state.focus}
+        className={classes.menu}
+        onClick={(key) => this.handleClick(key)}
+        items={TYPES.map((x) => ({
+          item: x.key,
+          title: `${x.key}:`,
+          description: x.description,
+        }))}
+      />
     );
 
     return (
-      <Dropdown overlayClassName={classes.overlay} overlay={menu} trigger={['click']}>
+      <Dropdown
+        overlayClassName={classes.overlay}
+        overlay={menu}
+        onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
+        trigger={['click']}>
         <Button icon={<FaTags />}>
           type: <AiOutlineDown />
         </Button>
