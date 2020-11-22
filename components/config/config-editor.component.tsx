@@ -19,8 +19,16 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   closed: {
     height: 0,
+    minHeight: 0,
     border: 'none !important',
-    padding: 0,
+    '& textarea': {
+      height: '0 !important',
+      minHeight: '0 !important',
+      padding: 0,
+    },
+    '& .ant-input-textarea-clear-icon': {
+      display: 'none',
+    },
   },
   invalid: {
     border: `1px solid ${theme.alertErrorBorderColor}`,
@@ -66,9 +74,7 @@ class ConfigEditorComponent extends React.Component<Props, State> {
         })}>
         <Input.TextArea
           rows={8}
-          className={classNames(classes.text, {
-            [classes.closed]: !config.isOpen,
-          })}
+          className={classes.text}
           value={config.configValue}
           onChange={(e) => configUpdated(e.currentTarget.value)}
           allowClear
