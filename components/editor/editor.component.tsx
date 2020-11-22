@@ -1,3 +1,4 @@
+import { Input } from 'antd';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
@@ -8,23 +9,22 @@ import { EditorUpdatedAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   root: {
-    fontFamily: '"Source Code Pro", monospace',
-    fontSize: 12,
     position: 'relative',
     outline: `1px solid ${theme.alertInfoBorderColor}`,
-    height: '100%',
     width: '100%',
   },
   text: {
+    fontFamily: '"Source Code Pro", monospace',
+    fontSize: 12,
     border: 'none',
     display: 'block',
-    height: '100%',
     width: '100%',
     resize: 'none',
     overflow: 'none',
     whiteSpace: 'wrap',
     '&:focus': {
       outline: 'none',
+      boxShadow: 'unset',
     },
   },
 });
@@ -56,10 +56,13 @@ class EditorComponent extends React.Component<Props, State> {
       <div className={classes.root}>
         <EditorGuideComponent editor={editor}></EditorGuideComponent>
 
-        <textarea
+        <Input.TextArea
+          rows={8}
           className={classes.text}
-          value={this.props.editor.editorValue}
-          onChange={(e) => this.setValue(e.currentTarget.value)}></textarea>
+          value={editor.editorValue}
+          onChange={(e) => this.setValue(e.currentTarget.value)}
+          allowClear
+        />
       </div>
     );
   }

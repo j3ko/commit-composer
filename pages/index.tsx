@@ -17,7 +17,6 @@ const styles = {
   },
   editContainer: {
     paddingTop: 20,
-    height: 200,
   },
   summaryContainer: {
     padding: '0 0 3px 0',
