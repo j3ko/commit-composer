@@ -26,6 +26,6 @@ const rootReducer = (state: AppState = new AppState(), action: PlainAction): App
   };
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer<AppState>(persistConfig, rootReducer);
 
 export default persistedReducer;
