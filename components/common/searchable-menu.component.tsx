@@ -1,6 +1,7 @@
 import { Col, Input, Row, Space, Typography } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
+import { AiFillCloseCircle } from 'react-icons/ai';
 import withStyles, { WithStylesProps } from 'react-jss';
 
 import SearchableMenuItemComponent from './searchable-menu-item.component';
@@ -43,6 +44,9 @@ const styles = (theme: CommitComposerTheme) => ({
   itemCol: {},
   highlight: {
     fontWeight: 'bold',
+  },
+  hidden: {
+    display: 'none',
   },
 });
 
@@ -90,12 +94,19 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     }
   }
 
-  clear(): void {
+  clear(e?: React.MouseEvent<HTMLSpanElement, MouseEvent>): void {
+    const timeout = e ? 0 : 500;
+
     if (this.state.searchInputRef.current) {
       setTimeout(() => {
         this.state.searchInputRef.current.setValue('');
         this.onSearch(undefined);
-      }, 500);
+      }, timeout);
+    }
+
+    if (e) {
+      e.stopPropagation();
+      this.focus();
     }
   }
 
@@ -167,13 +178,29 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     return (
       <div className={classNames(classes.root, className)}>
         <Row className={classes.searchRow}>
-          <Input
-            placeholder="Search"
-            onChange={(e) => this.onSearch(e.target.value)}
-            onFocus={(e) => e.target.select()}
-            ref={this.state.searchInputRef}
-            allowClear
-          />
+          <span className="ant-input-affix-wrapper">
+            <Input
+              placeholder="Search"
+              onChange={(e) => this.onSearch(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              onClick={(e) => e.stopPropagation()}
+              ref={this.state.searchInputRef}
+            />
+            <span
+              className={classNames('ant-input-suffix', {
+                [classes.hidden]: !this.state.searchInputRef?.current?.input.value,
+              })}>
+              <span
+                tabIndex={-1}
+                role="button"
+                aria-label="close-circle"
+                className="anticon anticon-close-circle ant-input-clear-icon"
+                onKeyDown={(e) => e.stopPropagation()}
+                onClick={(e) => this.clear(e)}>
+                <AiFillCloseCircle />
+              </span>
+            </span>
+          </span>
         </Row>
         <Row className={classes.itemRow}>
           <Col flex="auto" className={classes.itemCol}>

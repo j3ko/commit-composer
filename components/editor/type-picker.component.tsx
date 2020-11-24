@@ -1,4 +1,5 @@
 import { Button, Dropdown } from 'antd';
+import RecentListComponent from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
@@ -12,6 +13,10 @@ import { TypeSelectAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    maxWidth: 585,
+    display: 'block',
+  },
+  items: {
     maxHeight: 250,
   },
   overlay: {
@@ -19,6 +24,9 @@ const styles = (theme: CommitComposerTheme) => ({
       width: '100%',
       minWidth: 'unset',
     },
+  },
+  recentList: {
+    maxHeight: 70,
   },
 });
 
@@ -43,10 +51,12 @@ class TypePickerComponent extends React.Component<Props, State> {
   }
 
   handleClick(key: string): void {
-    const { typeSelected } = this.props;
-    const type = TYPES.find((x) => x.key === key);
-    typeSelected(type);
-    this.handleVisibilityChange(false);
+    setTimeout(() => {
+      const { typeSelected } = this.props;
+      const type = TYPES.find((x) => x.key === key);
+      typeSelected(type);
+      this.handleVisibilityChange(false);
+    }, 200);
   }
 
   handleVisibilityChange(focus: boolean): void {
@@ -54,18 +64,30 @@ class TypePickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes } = this.props;
+    const { classes, editor } = this.props;
+
     const menu = (
-      <SearchableMenuComponent
-        focus={this.state.focus}
-        className={classes.menu}
-        onClick={(key) => this.handleClick(key)}
-        items={TYPES.map((x) => ({
-          item: x.key,
-          title: `${x.key}:`,
-          description: x.description,
-        }))}
-      />
+      <span className={classes.menu}>
+        <RecentListComponent
+          className={classes.recentList}
+          onClick={(key) => this.handleClick(key)}
+          items={editor.recentTypes.map((x) => ({
+            item: x.key,
+            title: x.description,
+            display: <span>{x.key}:</span>,
+          }))}
+        />
+        <SearchableMenuComponent
+          focus={this.state.focus}
+          className={classes.items}
+          onClick={(key) => this.handleClick(key)}
+          items={TYPES.map((x) => ({
+            item: x.key,
+            title: `${x.key}:`,
+            description: x.description,
+          }))}
+        />
+      </span>
     );
 
     return (

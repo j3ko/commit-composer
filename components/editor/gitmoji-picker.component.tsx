@@ -1,4 +1,5 @@
 import { Button, Dropdown } from 'antd';
+import RecentListComponent from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
@@ -11,6 +12,10 @@ import { GitmojiSelectAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    maxWidth: 380,
+    display: 'block',
+  },
+  items: {
     maxHeight: 250,
   },
   gitmoji: {
@@ -21,6 +26,9 @@ const styles = (theme: CommitComposerTheme) => ({
       width: '100%',
       minWidth: 'unset',
     },
+  },
+  recentList: {
+    maxHeight: 70,
   },
 });
 
@@ -45,10 +53,12 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   handleClick(key: string): void {
-    const { gitmojiSelected } = this.props;
-    const gitmoji = GITMOJIS.find((x) => x.markdown === key);
-    gitmojiSelected(gitmoji);
-    this.handleVisibilityChange(false);
+    setTimeout(() => {
+      const { gitmojiSelected } = this.props;
+      const gitmoji = GITMOJIS.find((x) => x.markdown === key);
+      gitmojiSelected(gitmoji);
+      this.handleVisibilityChange(false);
+    }, 200);
   }
 
   handleVisibilityChange(focus: boolean): void {
@@ -56,24 +66,39 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes } = this.props;
+    const { classes, editor } = this.props;
 
     const menu = (
-      <SearchableMenuComponent
-        focus={this.state.focus}
-        className={classes.menu}
-        onClick={(key) => this.handleClick(key)}
-        items={GITMOJIS.map((x) => ({
-          item: x.markdown,
-          title: x.markdown,
-          description: x.description,
-          icon: (
-            <span aria-label={x.markdown} role="img" className={classes.gitmoji}>
-              {x.icon}
-            </span>
-          ),
-        }))}
-      />
+      <span className={classes.menu}>
+        <RecentListComponent
+          className={classes.recentList}
+          onClick={(key) => this.handleClick(key)}
+          items={editor.recentGitmojis.map((x) => ({
+            item: x.markdown,
+            title: x.description,
+            display: (
+              <span aria-label={x.markdown} role="img">
+                {x.icon}
+              </span>
+            ),
+          }))}
+        />
+        <SearchableMenuComponent
+          focus={this.state.focus}
+          className={classes.items}
+          onClick={(key) => this.handleClick(key)}
+          items={GITMOJIS.map((x) => ({
+            item: x.markdown,
+            title: x.markdown,
+            description: x.description,
+            icon: (
+              <span aria-label={x.markdown} role="img" className={classes.gitmoji}>
+                {x.icon}
+              </span>
+            ),
+          }))}
+        />
+      </span>
     );
 
     return (
