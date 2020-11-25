@@ -1,4 +1,5 @@
 import { Button, Dropdown } from 'antd';
+import classNames from 'classnames';
 import RecentListComponent from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
@@ -13,11 +14,28 @@ import { TypeSelectAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
-    maxWidth: 585,
     display: 'block',
+    [`@media only screen and (min-width: ${theme.screenMD})`]: {
+      maxWidth: 585,
+    },
   },
   items: {
     maxHeight: 250,
+  },
+  button: {
+    padding: '2px 9px',
+  },
+  buttonIcon: {},
+  buttonText: {
+    width: 56,
+    margin: '0 !important',
+    textAlign: 'right',
+    overflow: 'clip',
+    transition: 'all 0.3s ease, opacity 0.5s ease 0.3s',
+  },
+  hiddenText: {
+    width: 0,
+    opacity: 0,
   },
   overlay: {
     [`@media only screen and (max-width: ${theme.screenMD})`]: {
@@ -39,14 +57,16 @@ export interface DispatchProps {
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
-  focus: boolean;
+  visible: boolean;
+  hovered: boolean;
 }
 
 class TypePickerComponent extends React.Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
     this.state = {
-      focus: false,
+      visible: false,
+      hovered: false,
     };
   }
 
@@ -59,12 +79,18 @@ class TypePickerComponent extends React.Component<Props, State> {
     }, 200);
   }
 
-  handleVisibilityChange(focus: boolean): void {
-    this.setState({ focus });
+  handleVisibilityChange(visible: boolean): void {
+    this.setState({ visible });
+    !visible && this.handleHover(visible);
+  }
+
+  handleHover(hovered: boolean) {
+    setTimeout(() => this.setState({ hovered }));
   }
 
   render(): JSX.Element {
     const { classes, editor } = this.props;
+    const { hovered, visible } = this.state;
 
     const menu = (
       <span className={classes.menu}>
@@ -78,7 +104,7 @@ class TypePickerComponent extends React.Component<Props, State> {
           }))}
         />
         <SearchableMenuComponent
-          focus={this.state.focus}
+          focus={visible}
           className={classes.items}
           onClick={(key) => this.handleClick(key)}
           items={TYPES.map((x) => ({
@@ -95,9 +121,23 @@ class TypePickerComponent extends React.Component<Props, State> {
         overlayClassName={classes.overlay}
         overlay={menu}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
-        trigger={['click']}>
-        <Button icon={<FaTags />}>
-          type: <AiOutlineDown />
+        trigger={['click']}
+        placement="bottomRight">
+        <Button
+          className={classes.button}
+          onMouseEnter={() => this.handleHover(true)}
+          onMouseLeave={() => !visible && this.handleHover(false)}
+          shape={'round'}
+          icon={<FaTags className={classes.buttonIcon} />}>
+          <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
+            {hovered ? (
+              <>
+                type: <AiOutlineDown />
+              </>
+            ) : (
+              <></>
+            )}
+          </span>
         </Button>
       </Dropdown>
     );

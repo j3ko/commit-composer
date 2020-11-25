@@ -1,4 +1,5 @@
 import { Button, Dropdown } from 'antd';
+import classNames from 'classnames';
 import RecentListComponent from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
@@ -12,14 +13,30 @@ import { GitmojiSelectAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
-    maxWidth: 380,
     display: 'block',
+    [`@media only screen and (min-width: ${theme.screenMD})`]: {
+      maxWidth: 380,
+    },
   },
   items: {
     maxHeight: 250,
   },
   gitmoji: {
     paddingRight: 8,
+  },
+  button: {
+    padding: '2px 6px',
+  },
+  buttonIcon: {},
+  buttonText: {
+    width: 72,
+    textAlign: 'right',
+    overflow: 'clip',
+    transition: 'all 0.3s ease, opacity 0.5s ease 0.3s',
+  },
+  hiddenText: {
+    width: 0,
+    opacity: 0,
   },
   overlay: {
     [`@media only screen and (max-width: ${theme.screenMD})`]: {
@@ -41,14 +58,16 @@ export interface DispatchProps {
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
-  focus: boolean;
+  visible: boolean;
+  hovered: boolean;
 }
 
 class GitmojiPickerComponent extends React.Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
     this.state = {
-      focus: false,
+      visible: false,
+      hovered: false,
     };
   }
 
@@ -61,12 +80,18 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
     }, 200);
   }
 
-  handleVisibilityChange(focus: boolean): void {
-    this.setState({ focus });
+  handleVisibilityChange(visible: boolean): void {
+    this.setState({ visible });
+    !visible && this.handleHover(visible);
+  }
+
+  handleHover(hovered: boolean) {
+    setTimeout(() => this.setState({ hovered }));
   }
 
   render(): JSX.Element {
     const { classes, editor } = this.props;
+    const { hovered, visible } = this.state;
 
     const menu = (
       <span className={classes.menu}>
@@ -84,7 +109,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           }))}
         />
         <SearchableMenuComponent
-          focus={this.state.focus}
+          focus={visible}
           className={classes.items}
           onClick={(key) => this.handleClick(key)}
           items={GITMOJIS.map((x) => ({
@@ -106,14 +131,27 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
         overlayClassName={classes.overlay}
         overlay={menu}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
-        trigger={['click']}>
+        trigger={['click']}
+        placement="bottomRight">
         <Button
+          className={classes.button}
+          onMouseEnter={() => this.handleHover(true)}
+          onMouseLeave={() => !visible && this.handleHover(false)}
+          shape={'round'}
           icon={
-            <span aria-label="gitmoji" role="img" className={classes.gitmoji}>
+            <span aria-label="gitmoji" role="img" className={classes.buttonIcon}>
               🎉
             </span>
           }>
-          :gitmoji: <AiOutlineDown />
+          <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
+            {hovered ? (
+              <>
+                :gitmoji: <AiOutlineDown />
+              </>
+            ) : (
+              <></>
+            )}
+          </span>
         </Button>
       </Dropdown>
     );

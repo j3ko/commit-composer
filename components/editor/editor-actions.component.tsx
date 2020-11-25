@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import ConfigSwitcherComponent from 'components/config/config-switcher.component';
 import EditorCopyComponent from 'components/editor/editor-copy.component';
 import EditorFormatComponent from 'components/editor/editor-format.component';
-import GitmojiPickerComponent from 'components/editor/gitmoji-picker.component';
-import TypePickerComponent from 'components/editor/type-picker.component';
 import { UseBreakpointHook } from 'hooks/use-breakpoint.hook';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
@@ -37,8 +35,6 @@ class EditorActionsComponent extends React.Component<Props, State> {
               className={classNames({
                 [classes.fullWidth]: !screen.md,
               })}>
-              <TypePickerComponent></TypePickerComponent>
-              <GitmojiPickerComponent></GitmojiPickerComponent>
               <ConfigSwitcherComponent></ConfigSwitcherComponent>
               <EditorFormatComponent></EditorFormatComponent>
               <EditorCopyComponent></EditorCopyComponent>

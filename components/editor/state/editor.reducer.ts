@@ -57,7 +57,7 @@ const editorReducer = (
     const { payload } = action;
     const editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload);
     const map = state.recentGitmojis.map((x) => ({ key: x.markdown, value: x }));
-    const cache = new LRUCache<GitmojiDefinition>(map, 10);
+    const cache = new LRUCache<GitmojiDefinition>(map, 20);
     cache.write(payload.markdown, payload);
     const recentGitmojis = cache.toArray();
 

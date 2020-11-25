@@ -6,6 +6,8 @@ import EditorActionsComponent from 'components/editor/editor-actions.component';
 import EditorSummaryComponent from 'components/editor/editor-summary.component';
 import EditorValidationComponent from 'components/editor/editor-validation.component';
 import EditorComponent from 'components/editor/editor.component';
+import GitmojiPickerComponent from 'components/editor/gitmoji-picker.component';
+import TypePickerComponent from 'components/editor/type-picker.component';
 import UseBreakpointHook from 'hooks/use-breakpoint.hook';
 import { MainLayout } from 'layouts/main.layout';
 import React from 'react';
@@ -69,7 +71,10 @@ export class Index extends React.Component<Props, State> {
         <Row>
           <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
           <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.editContainer}>
-            <EditorComponent></EditorComponent>
+            <EditorComponent>
+              <TypePickerComponent></TypePickerComponent>
+              <GitmojiPickerComponent></GitmojiPickerComponent>
+            </EditorComponent>
           </Col>
           <Col xs={0} sm={1} md={2} lg={4} xl={5}></Col>
         </Row>

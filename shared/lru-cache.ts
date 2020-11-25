@@ -31,7 +31,10 @@ export class LRUCache<T> {
       }
 
       const newNode = new CacheNode<T>(key, value, this.head);
-      this.head.previous = newNode;
+
+      if (this.head) {
+        this.head.previous = newNode;
+      }
       this.head = newNode;
     }
 

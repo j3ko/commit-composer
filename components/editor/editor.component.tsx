@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input, Space } from 'antd';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
@@ -12,6 +12,7 @@ const styles = (theme: CommitComposerTheme) => ({
     position: 'relative',
     outline: `1px solid ${theme.alertInfoBorderColor}`,
     width: '100%',
+    backgroundColor: 'white',
   },
   text: {
     fontFamily: '"Source Code Pro", monospace',
@@ -26,6 +27,11 @@ const styles = (theme: CommitComposerTheme) => ({
       outline: 'none',
       boxShadow: 'unset',
     },
+  },
+  buttons: {
+    padding: 5,
+    width: '100%',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -50,7 +56,7 @@ class EditorComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor } = this.props;
+    const { classes, editor, children } = this.props;
 
     return (
       <div className={classes.root}>
@@ -63,6 +69,8 @@ class EditorComponent extends React.Component<Props, State> {
           onChange={(e) => this.setValue(e.currentTarget.value)}
           allowClear
         />
+
+        <Space className={classes.buttons}>{children}</Space>
       </div>
     );
   }
