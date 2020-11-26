@@ -31,7 +31,7 @@ const styles = (theme: CommitComposerTheme) => ({
     width: 14,
   },
   buttonText: {
-    width: 56,
+    width: 58,
     paddingTop: '2px',
     margin: '0 !important',
     textAlign: 'right',
