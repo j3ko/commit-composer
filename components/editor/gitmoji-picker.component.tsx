@@ -31,7 +31,7 @@ const styles = (theme: CommitComposerTheme) => ({
     position: 'relative',
     height: 14,
     width: 14,
-    verticalAlign: 'middle',
+    verticalAlign: 'text-bottom',
     '&:after': {
       content: `'🎉'`,
       position: 'absolute',

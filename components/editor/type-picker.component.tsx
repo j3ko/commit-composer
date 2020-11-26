@@ -28,6 +28,7 @@ const styles = (theme: CommitComposerTheme) => ({
   buttonIcon: {
     height: 14,
     width: 14,
+    verticalAlign: 'text-bottom',
   },
   buttonText: {
     width: 56,
