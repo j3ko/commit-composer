@@ -26,7 +26,7 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   button: {
     display: 'flex',
-    padding: '3px 8px',
+    padding: '4px 8px',
   },
   buttonIcon: {
     position: 'relative',
