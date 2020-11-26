@@ -40,3 +40,4 @@ deploy.log
 # serverless
 /.serverless_nextjs
 /.serverless
+serverless.yml

@@ -1,6 +1,6 @@
 {
   "header": "# Changelog\n\n",
   "scripts": {
-    "postchangelog": "npx copyfiles ./CHANGELOG.md ./public/ && git add ./public/CHANGELOG.md"
+    "postchangelog": "shx cp -R ./CHANGELOG.md ./public/ && git add ./public/CHANGELOG.md"
   }
 }
