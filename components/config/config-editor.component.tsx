@@ -1,3 +1,4 @@
+import { Input } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
@@ -18,8 +19,16 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   closed: {
     height: 0,
+    minHeight: 0,
     border: 'none !important',
-    padding: 0,
+    '& textarea': {
+      height: '0 !important',
+      minHeight: '0 !important',
+      padding: 0,
+    },
+    '& .ant-input-textarea-clear-icon': {
+      display: 'none',
+    },
   },
   invalid: {
     border: `1px solid ${theme.alertErrorBorderColor}`,
@@ -36,6 +45,7 @@ const styles = (theme: CommitComposerTheme) => ({
     resize: 'none',
     '&:focus': {
       outline: 'none',
+      boxShadow: 'unset',
     },
     display: 'block',
   },
@@ -53,7 +63,7 @@ export interface State {}
 
 class ConfigEditorComponent extends React.Component<Props, State> {
   render(): JSX.Element {
-    const { classes, config } = this.props;
+    const { classes, config, configUpdated } = this.props;
 
     return (
       <div
@@ -62,13 +72,13 @@ class ConfigEditorComponent extends React.Component<Props, State> {
           [classes.loading]: config.loading,
           [classes.closed]: !config.isOpen,
         })}>
-        <textarea
+        <Input.TextArea
           rows={8}
-          className={classNames(classes.text, {
-            [classes.closed]: !config.isOpen,
-          })}
-          value={this.props.config.configValue}
-          onChange={(e) => this.props.configUpdated(e.currentTarget.value)}></textarea>
+          className={classes.text}
+          value={config.configValue}
+          onChange={(e) => configUpdated(e.currentTarget.value)}
+          allowClear
+        />
         <ConfigValidationComponent config={config}></ConfigValidationComponent>
       </div>
     );

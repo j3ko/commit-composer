@@ -1,3 +1,4 @@
+import { Input, Space } from 'antd';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
@@ -8,24 +9,29 @@ import { EditorUpdatedAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   root: {
-    fontFamily: '"Source Code Pro", monospace',
-    fontSize: 12,
     position: 'relative',
     outline: `1px solid ${theme.alertInfoBorderColor}`,
-    height: '100%',
     width: '100%',
+    backgroundColor: 'white',
   },
   text: {
+    fontFamily: '"Source Code Pro", monospace',
+    fontSize: 12,
     border: 'none',
     display: 'block',
-    height: '100%',
     width: '100%',
     resize: 'none',
     overflow: 'none',
     whiteSpace: 'wrap',
     '&:focus': {
       outline: 'none',
+      boxShadow: 'unset',
     },
+  },
+  buttons: {
+    padding: 8,
+    width: '100%',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -50,16 +56,21 @@ class EditorComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor } = this.props;
+    const { classes, editor, children } = this.props;
 
     return (
       <div className={classes.root}>
         <EditorGuideComponent editor={editor}></EditorGuideComponent>
 
-        <textarea
+        <Input.TextArea
+          rows={8}
           className={classes.text}
-          value={this.props.editor.editorValue}
-          onChange={(e) => this.setValue(e.currentTarget.value)}></textarea>
+          value={editor.editorValue}
+          onChange={(e) => this.setValue(e.currentTarget.value)}
+          allowClear
+        />
+
+        <Space className={classes.buttons}>{children}</Space>
       </div>
     );
   }

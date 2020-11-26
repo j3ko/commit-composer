@@ -1,5 +1,8 @@
 import { PlainAction } from 'redux-typed-actions';
 import { CommitMessageLib } from 'shared/commit-message.lib';
+import { LRUCache } from 'shared/lru-cache';
+import { GitmojiDefinition } from 'shared/presets/gitmojis';
+import { TypeDefinition } from 'shared/presets/types';
 import { AppState, EditorState } from 'state';
 
 import {
@@ -51,19 +54,30 @@ const editorReducer = (
       loading: action.payload,
     };
   } else if (GitmojiSelectAction.is(action)) {
-    const editorValue = CommitMessageLib.setGitmoji(state.editorValue, action.payload);
+    const { payload } = action;
+    const editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload);
+    const map = state.recentGitmojis.map((x) => ({ key: x.markdown, value: x }));
+    const cache = new LRUCache<GitmojiDefinition>(map, 20);
+    cache.write(payload.markdown, payload);
+    const recentGitmojis = cache.toArray();
 
     result = {
       ...state,
       editorValue,
-      gitmoji: action.payload,
+      recentGitmojis,
     };
   } else if (TypeSelectAction.is(action)) {
+    const { payload } = action;
     const editorValue = CommitMessageLib.setType(state.editorValue, action.payload);
+    const map = state.recentTypes.map((x) => ({ key: x.key, value: x }));
+    const cache = new LRUCache<TypeDefinition>(map, 20);
+    cache.write(payload.key, payload);
+    const recentTypes = cache.toArray();
 
     result = {
       ...state,
       editorValue,
+      recentTypes,
     };
   }
 

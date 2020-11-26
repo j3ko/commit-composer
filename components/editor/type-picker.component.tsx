@@ -1,4 +1,7 @@
-import { Button, Dropdown, Menu, Space, Typography } from 'antd';
+import { Button, Dropdown } from 'antd';
+import classNames from 'classnames';
+import RecentListComponent from 'components/common/recent-list.component';
+import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
 import { FaTags } from 'react-icons/fa';
@@ -10,24 +13,43 @@ import { AppState, EditorState } from 'state';
 import { TypeSelectAction } from './state/editor.action';
 
 const styles = (theme: CommitComposerTheme) => ({
-  root: {},
   menu: {
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    maxHeight: 250,
-    [`@media only screen and (max-width: ${theme.screenMD})`]: {
-      width: '100%',
-      minWidth: 'unset',
+    display: 'block',
+    [`@media only screen and (min-width: ${theme.screenMD})`]: {
+      maxWidth: 585,
     },
   },
-  description: {
-    fontSize: 12,
+  items: {
+    maxHeight: 250,
+  },
+  button: {
+    display: 'flex',
+    padding: '2px 8px',
+  },
+  buttonIcon: {
+    height: 26,
+    width: 14,
+  },
+  buttonText: {
+    width: 58,
+    paddingTop: '2px',
+    margin: '0 !important',
+    textAlign: 'right',
+    overflow: 'clip',
+    transition: 'all 0.3s ease, opacity 0.5s ease 0.3s',
+  },
+  hiddenText: {
+    width: 0,
+    opacity: 0,
   },
   overlay: {
     [`@media only screen and (max-width: ${theme.screenMD})`]: {
       width: '100%',
       minWidth: 'unset',
     },
+  },
+  recentList: {
+    maxHeight: 70,
   },
 });
 
@@ -39,37 +61,88 @@ export interface DispatchProps {
   typeSelected: (type: TypeDefinition) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
-export interface State {}
+export interface State {
+  visible: boolean;
+  hovered: boolean;
+}
 
 class TypePickerComponent extends React.Component<Props, State> {
+  constructor(props: Readonly<Props>) {
+    super(props);
+    this.state = {
+      visible: false,
+      hovered: false,
+    };
+  }
+
   handleClick(key: string): void {
-    const { typeSelected } = this.props;
-    const type = TYPES.find((x) => x.key === key);
-    typeSelected(type);
+    setTimeout(() => {
+      const { typeSelected } = this.props;
+      const type = TYPES.find((x) => x.key === key);
+      typeSelected(type);
+      this.handleVisibilityChange(false);
+    }, 200);
+  }
+
+  handleVisibilityChange(visible: boolean): void {
+    this.setState({ visible });
+    !visible && this.handleHover(visible);
+  }
+
+  handleHover(hovered: boolean) {
+    setTimeout(() => this.setState({ hovered }));
   }
 
   render(): JSX.Element {
-    const { classes } = this.props;
+    const { classes, editor } = this.props;
+    const { hovered, visible } = this.state;
 
     const menu = (
-      <Menu onClick={({ key }) => this.handleClick(`${key}`)} className={classes.menu}>
-        {TYPES.map((x) => (
-          <Menu.Item key={x.key}>
-            <Space size={1} direction="vertical">
-              <Typography.Text>{x.key}:</Typography.Text>
-              <Typography.Text type="secondary" className={classes.description}>
-                {x.description}&nbsp;
-              </Typography.Text>
-            </Space>
-          </Menu.Item>
-        ))}
-      </Menu>
+      <span className={classes.menu}>
+        <RecentListComponent
+          className={classes.recentList}
+          onClick={(key) => this.handleClick(key)}
+          items={editor.recentTypes.map((x) => ({
+            item: x.key,
+            title: x.description,
+            display: <span>{x.key}:</span>,
+          }))}
+        />
+        <SearchableMenuComponent
+          focus={visible}
+          className={classes.items}
+          onClick={(key) => this.handleClick(key)}
+          items={TYPES.map((x) => ({
+            item: x.key,
+            title: `${x.key}:`,
+            description: x.description,
+          }))}
+        />
+      </span>
     );
 
     return (
-      <Dropdown overlayClassName={classes.overlay} overlay={menu} trigger={['click']}>
-        <Button icon={<FaTags />}>
-          type: <AiOutlineDown />
+      <Dropdown
+        overlayClassName={classes.overlay}
+        overlay={menu}
+        onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
+        trigger={['click']}
+        placement="bottomRight">
+        <Button
+          className={classes.button}
+          onMouseEnter={() => this.handleHover(true)}
+          onMouseLeave={() => !visible && this.handleHover(false)}
+          shape={'round'}
+          icon={<FaTags className={classes.buttonIcon} />}>
+          <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
+            {hovered ? (
+              <>
+                type: <AiOutlineDown />
+              </>
+            ) : (
+              <></>
+            )}
+          </span>
         </Button>
       </Dropdown>
     );
