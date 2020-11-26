@@ -25,11 +25,26 @@ const styles = (theme: CommitComposerTheme) => ({
     paddingRight: 8,
   },
   button: {
-    padding: '2px 6px',
+    display: 'flex',
+    padding: '4px 8px',
   },
-  buttonIcon: {},
+  buttonIcon: {
+    position: 'relative',
+    height: 26,
+    width: 14,
+    '&:after': {
+      content: `'🎉'`,
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%,-50%)',
+      height: 26,
+      width: 26,
+    },
+  },
   buttonText: {
-    width: 72,
+    height: 26,
+    width: 76,
     textAlign: 'right',
     overflow: 'clip',
     transition: 'all 0.3s ease, opacity 0.5s ease 0.3s',
@@ -138,11 +153,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           onMouseEnter={() => this.handleHover(true)}
           onMouseLeave={() => !visible && this.handleHover(false)}
           shape={'round'}
-          icon={
-            <span aria-label="gitmoji" role="img" className={classes.buttonIcon}>
-              🎉
-            </span>
-          }>
+          icon={<span aria-label="gitmoji" role="img" className={classes.buttonIcon}></span>}>
           <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
             {hovered ? (
               <>
