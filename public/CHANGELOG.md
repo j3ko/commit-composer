@@ -1,6 +1,16 @@
 # Changelog
 
 
+### [0.1.3](https://github.com/j3ko/commit-composer/compare/v0.1.2...v0.1.3) (2020-11-26)
+
+
+### Features
+
+* :lipstick: improve button layout ([d907fd9](https://github.com/j3ko/commit-composer/commit/d907fd92215df5e003346a29467ef91afb4903c9))
+* :sparkles: add clear button to editor/config inputs ([96be7da](https://github.com/j3ko/commit-composer/commit/96be7da771d297e5d15f749998c7c445eebe4b4f))
+* :sparkles: add gitmoji/type search ([2893345](https://github.com/j3ko/commit-composer/commit/28933453acce75d04b74514838783fed6d00fbb5))
+* :sparkles: add recent type/gitmoji pickers ([ef16bea](https://github.com/j3ko/commit-composer/commit/ef16beaf5e379c974a492a1cca27a241360c8f96))
+
 ### [0.1.2](https://github.com/j3ko/commit-composer/compare/v0.1.1...v0.1.2) (2020-11-20)
 
 
