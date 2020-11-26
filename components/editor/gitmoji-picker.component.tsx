@@ -25,11 +25,12 @@ const styles = (theme: CommitComposerTheme) => ({
     paddingRight: 8,
   },
   button: {
-    padding: '6px 8px',
+    display: 'flex',
+    padding: '3px 8px',
   },
   buttonIcon: {
     position: 'relative',
-    height: 14,
+    height: 26,
     width: 14,
     '&:after': {
       content: `'🎉'`,
@@ -40,6 +41,7 @@ const styles = (theme: CommitComposerTheme) => ({
     },
   },
   buttonText: {
+    height: 26,
     width: 76,
     textAlign: 'right',
     overflow: 'clip',

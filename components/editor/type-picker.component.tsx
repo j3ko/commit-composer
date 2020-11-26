@@ -23,10 +23,11 @@ const styles = (theme: CommitComposerTheme) => ({
     maxHeight: 250,
   },
   button: {
-    padding: '6px 8px',
+    display: 'flex',
+    padding: '3px 8px',
   },
   buttonIcon: {
-    height: 14,
+    height: 26,
     width: 14,
   },
   buttonText: {
