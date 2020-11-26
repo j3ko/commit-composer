@@ -38,6 +38,8 @@ const styles = (theme: CommitComposerTheme) => ({
       top: '50%',
       left: '50%',
       transform: 'translate(-50%,-50%)',
+      height: 26,
+      width: 26,
     },
   },
   buttonText: {
