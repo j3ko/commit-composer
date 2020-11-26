@@ -24,7 +24,7 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   button: {
     display: 'flex',
-    padding: '4px 8px',
+    padding: '2px 8px',
   },
   buttonIcon: {
     height: 26,
@@ -32,6 +32,7 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   buttonText: {
     width: 56,
+    paddingTop: '2px',
     margin: '0 !important',
     textAlign: 'right',
     overflow: 'clip',

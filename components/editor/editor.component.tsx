@@ -29,7 +29,7 @@ const styles = (theme: CommitComposerTheme) => ({
     },
   },
   buttons: {
-    padding: 5,
+    padding: 8,
     width: '100%',
     justifyContent: 'flex-end',
   },
