@@ -10,16 +10,24 @@ import {
   EditorLoadAction,
   EditorUpdatedAction,
   GitmojiSelectAction,
+  TypeSelectAction,
 } from './editor.action';
 
 export const updateValidation: Epic<PlainAction, PlainAction, AppState> = (action$, store$) =>
-  action$.ofType(EditorUpdatedAction.type, EditorFormatAction.type, GitmojiSelectAction.type).pipe(
-    debounceTime(250),
-    switchMap(() =>
-      concat(
-        of(EditorLoadAction.strictGet(true)),
-        requestValidation(store$.value.editor.editorValue, store$.value.config.configValue),
-        of(EditorLoadAction.strictGet(false)),
+  action$
+    .ofType(
+      EditorUpdatedAction.type,
+      EditorFormatAction.type,
+      GitmojiSelectAction.type,
+      TypeSelectAction.type,
+    )
+    .pipe(
+      debounceTime(250),
+      switchMap(() =>
+        concat(
+          of(EditorLoadAction.strictGet(true)),
+          requestValidation(store$.value.editor.editorValue, store$.value.config.configValue),
+          of(EditorLoadAction.strictGet(false)),
+        ),
       ),
-    ),
-  );
+    );
