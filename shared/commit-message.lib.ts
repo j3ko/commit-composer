@@ -11,7 +11,7 @@ export class CommitMessageLib {
   }
 
   static setGitmoji(message: string, gitmoji: GitmojiDefinition): string {
-    return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, `$1 ${gitmoji.markdown} $6`);
+    return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, `$1 ${gitmoji.shortcode} $6`);
   }
 
   static format(commit: Commit, ruleset: QualifiedConfig): string {

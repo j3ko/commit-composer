@@ -19,69 +19,40 @@ const editorReducer = (
   action: PlainAction,
   appState: AppState,
 ): EditorState => {
-  let result = state;
-
   if (EditorUpdatedAction.is(action)) {
-    result = {
-      ...state,
-      editorValue: action.payload,
-    };
+    state.editorValue = action.payload;
   } else if (ValidationUpdatedAsync.success.is(action)) {
-    result = {
-      ...state,
-      validationResult: action.payload,
-    };
+    state.validationResult = action.payload;
   } else if (ValidationUpdatedAsync.failure.is(action)) {
-    result = {
-      ...state,
-      validationResult: undefined,
-    };
+    state.validationResult = undefined;
   } else if (EditorFormatAction.is(action)) {
     if (state.validationResult && appState.config.ruleset) {
-      const editorValue = CommitMessageLib.format(
+      state.editorValue = CommitMessageLib.format(
         state.validationResult.commit,
         appState.config.ruleset.ruleset,
       );
-
-      result = {
-        ...state,
-        editorValue,
-      };
     }
   } else if (EditorLoadAction.is(action)) {
-    result = {
-      ...state,
-      loading: action.payload,
-    };
+    state.loading = action.payload;
   } else if (GitmojiSelectAction.is(action)) {
     const { payload } = action;
-    const editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload);
-    const map = state.recentGitmojis.map((x) => ({ key: x.markdown, value: x }));
-    const cache = new LRUCache<GitmojiDefinition>(map, 20);
-    cache.write(payload.markdown, payload);
-    const recentGitmojis = cache.toArray();
+    state.editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload);
 
-    result = {
-      ...state,
-      editorValue,
-      recentGitmojis,
-    };
+    const map = state.recentGitmojis.map((x) => ({ key: x.shortcode, value: x }));
+    const cache = new LRUCache<GitmojiDefinition>(map, 20);
+    cache.write(payload.shortcode, payload);
+    state.recentGitmojis = cache.toArray();
   } else if (TypeSelectAction.is(action)) {
     const { payload } = action;
-    const editorValue = CommitMessageLib.setType(state.editorValue, action.payload);
+    state.editorValue = CommitMessageLib.setType(state.editorValue, action.payload);
+
     const map = state.recentTypes.map((x) => ({ key: x.key, value: x }));
     const cache = new LRUCache<TypeDefinition>(map, 20);
     cache.write(payload.key, payload);
-    const recentTypes = cache.toArray();
-
-    result = {
-      ...state,
-      editorValue,
-      recentTypes,
-    };
+    state.recentTypes = cache.toArray();
   }
 
-  return result;
+  return state;
 };
 
 export default editorReducer;

@@ -74,72 +74,72 @@ describe('commit-message', () => {
     const message = '';
     const gitmoji: GitmojiDefinition = {
       icon: '🎉',
-      markdown: ':tada:',
+      shortcode: ':tada:',
       description: 'Begin a project.',
     };
 
     const result = CommitMessageLib.setGitmoji(message, gitmoji);
-    expect(result).toBe(` ${gitmoji.markdown} `);
+    expect(result).toBe(` ${gitmoji.shortcode} `);
   });
 
   test('setGitmoji() - type only', () => {
     const message = 'chore:';
     const gitmoji: GitmojiDefinition = {
       icon: '🎉',
-      markdown: ':tada:',
+      shortcode: ':tada:',
       description: 'Begin a project.',
     };
 
     const result = CommitMessageLib.setGitmoji(message, gitmoji);
-    expect(result).toBe(`chore: ${gitmoji.markdown} `);
+    expect(result).toBe(`chore: ${gitmoji.shortcode} `);
   });
 
   test('setGitmoji() - type and existing gitmoji', () => {
     const message = 'chore: :rocket:';
     const gitmoji: GitmojiDefinition = {
       icon: '🎉',
-      markdown: ':tada:',
+      shortcode: ':tada:',
       description: 'Begin a project.',
     };
 
     const result = CommitMessageLib.setGitmoji(message, gitmoji);
-    expect(result).toBe(`chore: ${gitmoji.markdown} `);
+    expect(result).toBe(`chore: ${gitmoji.shortcode} `);
   });
 
   test('setGitmoji() - type and subject', () => {
     const message = 'chore: validate gitmoji';
     const gitmoji: GitmojiDefinition = {
       icon: '🎉',
-      markdown: ':tada:',
+      shortcode: ':tada:',
       description: 'Begin a project.',
     };
 
     const result = CommitMessageLib.setGitmoji(message, gitmoji);
-    expect(result).toBe(`chore: ${gitmoji.markdown} validate gitmoji`);
+    expect(result).toBe(`chore: ${gitmoji.shortcode} validate gitmoji`);
   });
 
   test('setGitmoji() - type, subject and existing gitmoji', () => {
     const message = 'chore: :rocket: validate gitmoji';
     const gitmoji: GitmojiDefinition = {
       icon: '🎉',
-      markdown: ':tada:',
+      shortcode: ':tada:',
       description: 'Begin a project.',
     };
 
     const result = CommitMessageLib.setGitmoji(message, gitmoji);
-    expect(result).toBe(`chore: ${gitmoji.markdown} validate gitmoji`);
+    expect(result).toBe(`chore: ${gitmoji.shortcode} validate gitmoji`);
   });
 
   test('setGitmoji() - type, subject and body', () => {
     const message = 'chore: validate gitmoji\r\n\r\nthis is a body';
     const gitmoji: GitmojiDefinition = {
       icon: '🎉',
-      markdown: ':tada:',
+      shortcode: ':tada:',
       description: 'Begin a project.',
     };
 
     const result = CommitMessageLib.setGitmoji(message, gitmoji);
-    expect(result).toBe(`chore: ${gitmoji.markdown} validate gitmoji\r\n\r\nthis is a body`);
+    expect(result).toBe(`chore: ${gitmoji.shortcode} validate gitmoji\r\n\r\nthis is a body`);
   });
 
   test('setType() - empty message', () => {
