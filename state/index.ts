@@ -9,6 +9,8 @@ export enum ConfigPreset {
 }
 
 export class AppState {
+  public '[immerable]' = true;
+
   editor: EditorState = new EditorState();
   config: ConfigState = new ConfigState();
 }

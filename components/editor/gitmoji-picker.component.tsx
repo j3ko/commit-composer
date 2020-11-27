@@ -90,7 +90,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   handleClick(key: string): void {
     setTimeout(() => {
       const { gitmojiSelected } = this.props;
-      const gitmoji = GITMOJIS.find((x) => x.markdown === key);
+      const gitmoji = GITMOJIS.find((x) => x.shortcode === key);
       gitmojiSelected(gitmoji);
       this.handleVisibilityChange(false);
     }, 200);
@@ -115,10 +115,10 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
           items={editor.recentGitmojis.map((x) => ({
-            item: x.markdown,
+            item: x.shortcode,
             title: x.description,
             display: (
-              <span aria-label={x.markdown} role="img">
+              <span aria-label={x.shortcode} role="img">
                 {x.icon}
               </span>
             ),
@@ -129,11 +129,11 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           className={classes.items}
           onClick={(key) => this.handleClick(key)}
           items={GITMOJIS.map((x) => ({
-            item: x.markdown,
-            title: x.markdown,
+            item: x.shortcode,
+            title: x.shortcode,
             description: x.description,
             icon: (
-              <span aria-label={x.markdown} role="img" className={classes.gitmoji}>
+              <span aria-label={x.shortcode} role="img" className={classes.gitmoji}>
                 {x.icon}
               </span>
             ),
