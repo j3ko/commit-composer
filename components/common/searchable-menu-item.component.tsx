@@ -2,17 +2,17 @@ import { Col, Row } from 'antd';
 import React from 'react';
 import withStyles, { WithStylesProps } from 'react-jss';
 
-const styles = {
+const styles = (theme: CommitComposerTheme) => ({
   root: {
     whiteSpace: 'nowrap',
     padding: '9px',
     flexWrap: 'nowrap',
     '&:hover': {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: theme.itemHoverBG,
       cursor: 'pointer',
     },
   },
-};
+});
 
 export interface OwnProps {
   item: string;

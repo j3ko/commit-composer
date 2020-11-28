@@ -48,8 +48,21 @@ const styles = (theme: CommitComposerTheme) => ({
       minWidth: 'unset',
     },
   },
+  searchBar: {
+    backgroundColor: theme.lighter,
+    padding: 9,
+  },
+  noTopPadding: {
+    paddingTop: 0,
+  },
   recentList: {
     maxHeight: 70,
+    backgroundColor: theme.lighter,
+  },
+  recentItem: {
+    '&:hover': {
+      backgroundColor: theme.itemHoverBG,
+    },
   },
 });
 
@@ -100,6 +113,7 @@ class TypePickerComponent extends React.Component<Props, State> {
     const menu = (
       <span className={classes.menu}>
         <RecentListComponent
+          itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
           items={editor.recentTypes.map((x) => ({
@@ -111,6 +125,9 @@ class TypePickerComponent extends React.Component<Props, State> {
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
+          searchBarClassName={classNames(classes.searchBar, {
+            [classes.noTopPadding]: Boolean(editor.recentTypes?.length),
+          })}
           onClick={(key) => this.handleClick(key)}
           items={TYPES.map((x) => ({
             item: x.key,

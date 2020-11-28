@@ -11,3 +11,4 @@ export const EditorFormatAction = defineAction('EditorFormatAction');
 export const EditorLoadAction = defineAction<boolean>('EditorLoadAction');
 export const GitmojiSelectAction = defineAction<GitmojiDefinition>('GitmojiSelectAction');
 export const TypeSelectAction = defineAction<TypeDefinition>('TypeSelectAction');
+export const ToggleShortcodeAction = defineAction<boolean>('ToggleShortcodeAction');

@@ -12,7 +12,7 @@ const styles = (theme: CommitComposerTheme) => ({
   itemContainer: {
     minHeight: 25,
     minWidth: 25,
-    padding: 10,
+    padding: '5px 10px',
     '&:hover': {
       backgroundColor: theme.itemHoverBG,
       cursor: 'pointer',
@@ -24,6 +24,7 @@ const styles = (theme: CommitComposerTheme) => ({
 });
 
 export interface OwnProps {
+  itemClassName?: string;
   item: string;
   title: string;
   display?: JSX.Element;
@@ -36,11 +37,13 @@ export interface State {}
 
 class RecentListItemComponent extends React.Component<Props, State> {
   render(): JSX.Element {
-    const { classes, display, item, title, onClick } = this.props;
+    const { classes, display, item, itemClassName, title, onClick } = this.props;
 
     return (
       <Tooltip overlayClassName={classes.tooltip} title={title} mouseLeaveDelay={0}>
-        <Col className={classNames(classes.itemContainer)} onClick={() => onClick?.(item)}>
+        <Col
+          className={classNames(classes.itemContainer, itemClassName)}
+          onClick={() => onClick?.(item)}>
           <Row className={classes.center}>{display}</Row>
         </Col>
       </Tooltip>
