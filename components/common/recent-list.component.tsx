@@ -21,7 +21,7 @@ const styles = {
   },
   itemRow: {
     overflow: 'hidden',
-    maxHeight: 42,
+    maxHeight: 32,
   },
 };
 
