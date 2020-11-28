@@ -27,7 +27,7 @@ const persistConfig = {
 const rootReducer = produce((state: AppState = new AppState(), action: PlainAction): void => {
   state.editor = editorReducer(state.editor, action, state);
   state.config = configReducer(state.config, action);
-});
+}, new AppState());
 
 const persistedReducer = persistReducer<AppState>(persistConfig, rootReducer);
 
