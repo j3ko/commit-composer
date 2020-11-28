@@ -34,9 +34,7 @@ const styles = (theme: CommitComposerTheme) => ({
     fontSize: 12,
     paddingRight: 9,
   },
-  searchRow: {
-    padding: 9,
-  },
+  searchRow: {},
   itemRow: {
     overflowY: 'auto',
     overflowX: 'hidden',
@@ -51,6 +49,7 @@ const styles = (theme: CommitComposerTheme) => ({
 });
 
 export interface OwnProps {
+  searchBarClassName?: string;
   className?: string;
   onClick?: (item: string) => void;
   focus: boolean;
@@ -172,12 +171,12 @@ class SearchableMenuComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, className } = this.props;
+    const { classes, className, searchBarClassName, children } = this.props;
     const { visibleItems } = this.state;
 
     return (
       <div className={classNames(classes.root, className)}>
-        <Row className={classes.searchRow}>
+        <Row className={classNames(classes.searchRow, searchBarClassName)}>
           <span className="ant-input-affix-wrapper">
             <Input
               placeholder="Search"
@@ -217,6 +216,9 @@ class SearchableMenuComponent extends React.Component<Props, State> {
               </SearchableMenuItemComponent>
             ))}
           </Col>
+        </Row>
+        <Row onClick={(e) => e.stopPropagation()}>
+          <Col flex="auto">{children}</Col>
         </Row>
       </div>
     );

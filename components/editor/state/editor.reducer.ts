@@ -10,6 +10,7 @@ import {
   EditorLoadAction,
   EditorUpdatedAction,
   GitmojiSelectAction,
+  ToggleShortcodeAction,
   TypeSelectAction,
   ValidationUpdatedAsync,
 } from './editor.action';
@@ -36,7 +37,7 @@ const editorReducer = (
     state.loading = action.payload;
   } else if (GitmojiSelectAction.is(action)) {
     const { payload } = action;
-    state.editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload);
+    state.editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload, state.useShortcode);
 
     const map = state.recentGitmojis.map((x) => ({ key: x.shortcode, value: x }));
     const cache = new LRUCache<GitmojiDefinition>(map, 20);
@@ -50,6 +51,8 @@ const editorReducer = (
     const cache = new LRUCache<TypeDefinition>(map, 20);
     cache.write(payload.key, payload);
     state.recentTypes = cache.toArray();
+  } else if (ToggleShortcodeAction.is(action)) {
+    state.useShortcode = action.payload;
   }
 
   return state;

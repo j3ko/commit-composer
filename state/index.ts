@@ -21,6 +21,7 @@ export class EditorState {
   loading = false;
   recentGitmojis: GitmojiDefinition[] = [];
   recentTypes: TypeDefinition[] = [];
+  useShortcode = false;
 }
 
 export class ConfigState {
