@@ -17,8 +17,6 @@ export class AppState {
 }
 
 export class EditorState {
-  [immerable] = true;
-
   editorValue?: string = 'chore: validate commit message';
   validationResult?: ValidationResult = new ValidationResult();
   loading = false;
@@ -27,8 +25,6 @@ export class EditorState {
 }
 
 export class ConfigState {
-  [immerable] = true;
-
   configValue?: string;
   ruleset?: Ruleset = new Ruleset();
   isOpen = false;
@@ -36,8 +32,6 @@ export class ConfigState {
 }
 
 export class ValidationResult implements LintResultDTO {
-  [immerable] = true;
-
   input = 'initial validation result';
   valid = true;
   errors: LintRuleOutcome[] = [];
@@ -46,8 +40,6 @@ export class ValidationResult implements LintResultDTO {
 }
 
 export class Ruleset implements RulesetResultDTO {
-  [immerable] = true;
-
   valid = true;
   ruleset?: QualifiedConfig;
 }
