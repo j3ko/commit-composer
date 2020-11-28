@@ -73,7 +73,7 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   recentItem: {
     '&:hover': {
-      backgroundColor: theme.itemHoverBGDark,
+      backgroundColor: theme.itemHoverBG,
     },
   },
   actionContainer: {
