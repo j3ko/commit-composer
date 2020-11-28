@@ -89,7 +89,7 @@ describe('commit-message', () => {
         description: 'Begin a project.',
       };
 
-      const result = CommitMessageLib.setGitmoji(message, gitmoji);
+      const result = CommitMessageLib.setGitmoji(message, gitmoji, true);
       expect(result).toBe(` ${gitmoji.shortcode} `);
     });
 
@@ -113,7 +113,7 @@ describe('commit-message', () => {
         description: 'Begin a project.',
       };
 
-      const result = CommitMessageLib.setGitmoji(message, gitmoji);
+      const result = CommitMessageLib.setGitmoji(message, gitmoji, true);
       expect(result).toBe(`chore: ${gitmoji.shortcode} `);
     });
 
@@ -137,7 +137,7 @@ describe('commit-message', () => {
         description: 'Begin a project.',
       };
 
-      const result = CommitMessageLib.setGitmoji(message, gitmoji);
+      const result = CommitMessageLib.setGitmoji(message, gitmoji, true);
       expect(result).toBe(`chore: ${gitmoji.shortcode} `);
     });
 
@@ -161,7 +161,7 @@ describe('commit-message', () => {
         description: 'Begin a project.',
       };
 
-      const result = CommitMessageLib.setGitmoji(message, gitmoji);
+      const result = CommitMessageLib.setGitmoji(message, gitmoji, true);
       expect(result).toBe(`chore: ${gitmoji.shortcode} validate gitmoji`);
     });
 
@@ -185,7 +185,7 @@ describe('commit-message', () => {
         description: 'Begin a project.',
       };
 
-      const result = CommitMessageLib.setGitmoji(message, gitmoji);
+      const result = CommitMessageLib.setGitmoji(message, gitmoji, true);
       expect(result).toBe(`chore: ${gitmoji.shortcode} validate gitmoji`);
     });
 
@@ -209,7 +209,7 @@ describe('commit-message', () => {
         description: 'Begin a project.',
       };
 
-      const result = CommitMessageLib.setGitmoji(message, gitmoji);
+      const result = CommitMessageLib.setGitmoji(message, gitmoji, true);
       expect(result).toBe(`chore: ${gitmoji.shortcode} validate gitmoji\r\n\r\nthis is a body`);
     });
 
@@ -226,7 +226,6 @@ describe('commit-message', () => {
     });
 
     test('all unicode', () => {
-      const message = '';
       const gitmoji: GitmojiDefinition = {
         icon: '🎉',
         shortcode: ':tada:',

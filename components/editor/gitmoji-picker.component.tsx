@@ -63,6 +63,8 @@ const styles = (theme: CommitComposerTheme) => ({
   searchBar: {
     backgroundColor: theme.lighter,
     padding: 9,
+  },
+  noTopPadding: {
     paddingTop: 0,
   },
   recentList: {
@@ -149,7 +151,9 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
-          searchBarClassName={classes.searchBar}
+          searchBarClassName={classNames(classes.searchBar, {
+            [classes.noTopPadding]: Boolean(editor.recentGitmojis?.length),
+          })}
           onClick={(key) => this.handleClick(key)}
           items={GITMOJIS.map((x) => ({
             item: x.shortcode,

@@ -51,6 +51,8 @@ const styles = (theme: CommitComposerTheme) => ({
   searchBar: {
     backgroundColor: theme.lighter,
     padding: 9,
+  },
+  noTopPadding: {
     paddingTop: 0,
   },
   recentList: {
@@ -123,7 +125,9 @@ class TypePickerComponent extends React.Component<Props, State> {
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
-          searchBarClassName={classes.searchBar}
+          searchBarClassName={classNames(classes.searchBar, {
+            [classes.noTopPadding]: Boolean(editor.recentTypes?.length),
+          })}
           onClick={(key) => this.handleClick(key)}
           items={TYPES.map((x) => ({
             item: x.key,

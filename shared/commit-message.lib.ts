@@ -10,7 +10,7 @@ export class CommitMessageLib {
     return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, `${type.key}: $4$9$10`);
   }
 
-  static setGitmoji(message: string, gitmoji: GitmojiDefinition, useShortcode = true): string {
+  static setGitmoji(message: string, gitmoji: GitmojiDefinition, useShortcode = false): string {
     return (message || '').replace(
       CommitMessageLib.SUBJECT_REGEX,
       `$1 ${useShortcode ? gitmoji.shortcode : gitmoji.icon} $10`,

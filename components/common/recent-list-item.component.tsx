@@ -12,7 +12,7 @@ const styles = (theme: CommitComposerTheme) => ({
   itemContainer: {
     minHeight: 25,
     minWidth: 25,
-    padding: 10,
+    padding: '5px 10px',
     '&:hover': {
       backgroundColor: theme.itemHoverBG,
       cursor: 'pointer',
