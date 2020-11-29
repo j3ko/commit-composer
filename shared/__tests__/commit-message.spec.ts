@@ -7,7 +7,7 @@ import { TypeDefinition } from '../presets/types';
 
 describe('commit-message', () => {
   /****************************************************
-   * format()
+   * format() start
    ****************************************************/
   describe('format()', () => {
     test('body-max-line-length - single line', () => {
@@ -76,9 +76,11 @@ describe('commit-message', () => {
       );
     });
   });
-
   /****************************************************
-   * setGitmoji()
+   * format() end
+   ****************************************************/
+  /****************************************************
+   * setGitmoji() start
    ****************************************************/
   describe('setGitmoji()', () => {
     test('empty message', () => {
@@ -238,9 +240,82 @@ describe('commit-message', () => {
       });
     });
   });
-
   /****************************************************
-   * setType()
+   * setGitmoji() end
+   ****************************************************/
+  /****************************************************
+   * setScope() start
+   ****************************************************/
+  describe('setScope()', () => {
+    test('empty message', () => {
+      const message = '';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`(${scope}): `);
+    });
+
+    test('existing scope', () => {
+      const message = '(core):';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`(${scope}): `);
+    });
+
+    test('gitmoji', () => {
+      const message = ':tada:';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`(${scope}): :tada:`);
+    });
+
+    test('existing scope and gitmoji', () => {
+      const message = '(core): :tada:';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`(${scope}): :tada:`);
+    });
+
+    test('type', () => {
+      const message = 'chore:';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`chore(${scope}): `);
+    });
+
+    test('type, existing scope and gitmoji', () => {
+      const message = 'chore(core): :tada:';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`chore(${scope}): :tada:`);
+    });
+
+    test('type, existing scope, gitmoji and subject', () => {
+      const message = 'chore(core): :tada: test message';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`chore(${scope}): :tada: test message`);
+    });
+
+    test('type, existing scope, gitmoji, subject and body', () => {
+      const message = 'chore(core): :tada: test message\r\n\r\nbody';
+      const scope = 'scope';
+
+      const result = CommitMessageLib.setScope(message, scope);
+      expect(result).toBe(`chore(${scope}): :tada: test message\r\n\r\nbody`);
+    });
+  });
+  /****************************************************
+   * setScope() end
+   ****************************************************/
+  /****************************************************
+   * setType() start
    ****************************************************/
   describe('setType()', () => {
     test('empty message', () => {
@@ -315,8 +390,8 @@ describe('commit-message', () => {
       expect(result).toBe(`${type.key}: :tada: test message\r\n\r\nbody`);
     });
 
-    test('gitmoji, subject and body', () => {
-      const message = ':tada: test message\r\n\r\nbody';
+    test('scope', () => {
+      const message = '(scope):';
       const type: TypeDefinition = {
         key: 'fix',
         title: 'Bug Fixes',
@@ -324,7 +399,58 @@ describe('commit-message', () => {
       };
 
       const result = CommitMessageLib.setType(message, type);
-      expect(result).toBe(`${type.key}: :tada: test message\r\n\r\nbody`);
+      expect(result).toBe(`${type.key}(scope): `);
+    });
+
+    test('existing type and scope', () => {
+      const message = 'chore(scope):';
+      const type: TypeDefinition = {
+        key: 'fix',
+        title: 'Bug Fixes',
+        description: 'A bug fix',
+      };
+
+      const result = CommitMessageLib.setType(message, type);
+      expect(result).toBe(`${type.key}(scope): `);
+    });
+
+    test('existing type, scope and subject', () => {
+      const message = 'chore(scope): test message';
+      const type: TypeDefinition = {
+        key: 'fix',
+        title: 'Bug Fixes',
+        description: 'A bug fix',
+      };
+
+      const result = CommitMessageLib.setType(message, type);
+      expect(result).toBe(`${type.key}(scope): test message`);
+    });
+
+    test('existing type, gitmoji, scope and subject', () => {
+      const message = 'chore(scope): :tada: test message';
+      const type: TypeDefinition = {
+        key: 'fix',
+        title: 'Bug Fixes',
+        description: 'A bug fix',
+      };
+
+      const result = CommitMessageLib.setType(message, type);
+      expect(result).toBe(`${type.key}(scope): :tada: test message`);
+    });
+
+    test('scope, gitmoji, subject and body', () => {
+      const message = '(scope): :tada: test message\r\n\r\nbody';
+      const type: TypeDefinition = {
+        key: 'fix',
+        title: 'Bug Fixes',
+        description: 'A bug fix',
+      };
+
+      const result = CommitMessageLib.setType(message, type);
+      expect(result).toBe(`${type.key}(scope): :tada: test message\r\n\r\nbody`);
     });
   });
+  /****************************************************
+   * setType() end
+   ****************************************************/
 });
