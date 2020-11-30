@@ -1,8 +1,8 @@
 import { Commit, LintResultDTO, LintRuleOutcome } from 'dtos/lint-result.dto';
 import { QualifiedConfig, RulesetResultDTO } from 'dtos/ruleset-result.dto';
 import { immerable } from 'immer';
-import { GitmojiDefinition } from 'shared/presets/gitmojis';
-import { TypeDefinition } from 'shared/presets/types';
+import { GitmojiDefinition, GITMOJIS } from 'shared/presets/gitmojis';
+import { TypeDefinition, TYPES } from 'shared/presets/types';
 
 export enum ConfigPreset {
   Conventional = '@commitlint/config-conventional',
@@ -14,6 +14,18 @@ export class AppState {
 
   editor: EditorState = new EditorState();
   config: ConfigState = new ConfigState();
+  preset: PresetState = new PresetState();
+}
+
+export class PresetState {
+  [immerable] = true;
+
+  recentGitmojis: GitmojiDefinition[] = [];
+  types: TypeDefinition[] = [];
+  recentTypes: TypeDefinition[] = [];
+  scopes: string[] = [];
+  recentScopes: string[] = [];
+  useShortcode = false;
 }
 
 export class EditorState {
@@ -22,9 +34,6 @@ export class EditorState {
   editorValue?: string = 'chore: validate commit message';
   validationResult?: ValidationResult = new ValidationResult();
   loading = false;
-  recentGitmojis: GitmojiDefinition[] = [];
-  recentTypes: TypeDefinition[] = [];
-  useShortcode = false;
 }
 
 export class ConfigState {

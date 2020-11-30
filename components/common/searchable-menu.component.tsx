@@ -77,8 +77,16 @@ class SearchableMenuComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
-    if (!prevProps.focus && this.props.focus) {
+    const { focus, items } = this.props;
+
+    if (!prevProps.focus && focus) {
       this.focus();
+    }
+
+    if (prevProps.items !== items) {
+      this.setState({
+        visibleItems: this.renderItems(items),
+      });
     }
   }
 
@@ -124,6 +132,10 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     const { classes } = this.props;
 
     const highlight = (input: string, regex?: RegExp): { elem: JSX.Element; found: boolean } => {
+      if (input === '' || input === undefined) {
+        return;
+      }
+
       const parts: React.ReactNode[] = input.split(regex);
       let found = false;
 
@@ -152,17 +164,20 @@ class SearchableMenuComponent extends React.Component<Props, State> {
         const descriptionRegex = query ? new RegExp(`(${escapeRegExp(query)})`, 'gi') : undefined;
         const description = highlight(x.description, descriptionRegex);
 
-        const found = query === undefined || query === '' || title.found || description.found;
+        const found =
+          query === undefined || query === '' || title.found || (description && description.found);
 
-        description.elem = React.cloneElement(description.elem, {
-          type: 'secondary',
-          className: classes.description,
-        });
+        if (description) {
+          description.elem = React.cloneElement(description.elem, {
+            type: 'secondary',
+            className: classes.description,
+          });
+        }
 
         return {
           item: x.item,
           title: title.elem,
-          description: description.elem,
+          description: description && description.elem,
           icon: x.icon,
           found,
         };

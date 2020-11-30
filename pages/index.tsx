@@ -6,8 +6,9 @@ import EditorActionsComponent from 'components/editor/editor-actions.component';
 import EditorSummaryComponent from 'components/editor/editor-summary.component';
 import EditorValidationComponent from 'components/editor/editor-validation.component';
 import EditorComponent from 'components/editor/editor.component';
-import GitmojiPickerComponent from 'components/editor/gitmoji-picker.component';
-import TypePickerComponent from 'components/editor/type-picker.component';
+import GitmojiPickerComponent from 'components/preset/gitmoji-picker.component';
+import ScopePickerComponent from 'components/preset/scope-picker.component';
+import TypePickerComponent from 'components/preset/type-picker.component';
 import UseBreakpointHook from 'hooks/use-breakpoint.hook';
 import { MainLayout } from 'layouts/main.layout';
 import React from 'react';
@@ -73,6 +74,7 @@ export class Index extends React.Component<Props, State> {
           <Col xs={24} sm={22} md={18} lg={16} xl={14} className={classes.editContainer}>
             <EditorComponent>
               <TypePickerComponent></TypePickerComponent>
+              <ScopePickerComponent></ScopePickerComponent>
               <GitmojiPickerComponent></GitmojiPickerComponent>
             </EditorComponent>
           </Col>

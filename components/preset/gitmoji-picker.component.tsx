@@ -7,12 +7,13 @@ import { AiOutlineCheck, AiOutlineClose, AiOutlineDown } from 'react-icons/ai';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
 import { GitmojiDefinition, GITMOJIS } from 'shared/presets/gitmojis';
-import { AppState, EditorState } from 'state';
+import { AppState, PresetState } from 'state';
 
-import { GitmojiSelectAction, ToggleShortcodeAction } from './state/editor.action';
+import { GitmojiSelectAction, ToggleShortcodeAction } from './state/preset.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
       maxWidth: 380,
@@ -89,7 +90,7 @@ const styles = (theme: CommitComposerTheme) => ({
 
 export interface OwnProps {}
 export interface ReduxProps {
-  editor: EditorState;
+  preset: PresetState;
 }
 export interface DispatchProps {
   gitmojiSelected: (gitmoji: GitmojiDefinition) => void;
@@ -111,6 +112,8 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   handleClick(key: string): void {
+    const { preset } = this.props;
+
     setTimeout(() => {
       const { gitmojiSelected } = this.props;
       const gitmoji = GITMOJIS.find((x) => x.shortcode === key);
@@ -129,7 +132,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor, toggleShortcode } = this.props;
+    const { classes, preset, toggleShortcode } = this.props;
     const { hovered, visible } = this.state;
 
     const menu = (
@@ -138,7 +141,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={editor.recentGitmojis.map((x) => ({
+          items={preset.recentGitmojis.map((x) => ({
             item: x.shortcode,
             title: x.description,
             display: (
@@ -152,7 +155,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           focus={visible}
           className={classes.items}
           searchBarClassName={classNames(classes.searchBar, {
-            [classes.noTopPadding]: Boolean(editor.recentGitmojis?.length),
+            [classes.noTopPadding]: Boolean(preset.recentGitmojis?.length),
           })}
           onClick={(key) => this.handleClick(key)}
           items={GITMOJIS.map((x) => ({
@@ -169,7 +172,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
             <Typography.Text className={classes.actionText}>Shortcode:</Typography.Text>
             <Switch
               size="small"
-              defaultChecked={editor.useShortcode}
+              defaultChecked={preset.useShortcode}
               checkedChildren={<AiOutlineCheck />}
               unCheckedChildren={<AiOutlineClose />}
               onChange={(x) => toggleShortcode(x)}
@@ -208,8 +211,8 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { preset } = state;
+  return { preset };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {

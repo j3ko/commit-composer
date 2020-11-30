@@ -4,16 +4,17 @@ import RecentListComponent from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
-import { FaTags } from 'react-icons/fa';
+import { BsBraces } from 'react-icons/bs';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
 import { TypeDefinition, TYPES } from 'shared/presets/types';
-import { AppState, EditorState } from 'state';
+import { AppState, PresetState } from 'state';
 
-import { TypeSelectAction } from './state/editor.action';
+import { ScopeSelectAction, TypeSelectAction } from './state/preset.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
       maxWidth: 585,
@@ -31,7 +32,7 @@ const styles = (theme: CommitComposerTheme) => ({
     width: 14,
   },
   buttonText: {
-    width: 58,
+    width: 70,
     paddingTop: '2px',
     margin: '0 !important',
     textAlign: 'right',
@@ -68,10 +69,10 @@ const styles = (theme: CommitComposerTheme) => ({
 
 export interface OwnProps {}
 export interface ReduxProps {
-  editor: EditorState;
+  preset: PresetState;
 }
 export interface DispatchProps {
-  typeSelected: (type: TypeDefinition) => void;
+  scopeSelected: (scope: string) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
@@ -79,7 +80,7 @@ export interface State {
   hovered: boolean;
 }
 
-class TypePickerComponent extends React.Component<Props, State> {
+class ScopePickerComponent extends React.Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
     this.state = {
@@ -90,9 +91,8 @@ class TypePickerComponent extends React.Component<Props, State> {
 
   handleClick(key: string): void {
     setTimeout(() => {
-      const { typeSelected } = this.props;
-      const type = TYPES.find((x) => x.key === key);
-      typeSelected(type);
+      const { scopeSelected } = this.props;
+      scopeSelected(key);
       this.handleVisibilityChange(false);
     }, 200);
   }
@@ -107,7 +107,7 @@ class TypePickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor } = this.props;
+    const { classes, preset } = this.props;
     const { hovered, visible } = this.state;
 
     const menu = (
@@ -116,29 +116,28 @@ class TypePickerComponent extends React.Component<Props, State> {
           itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={editor.recentTypes.map((x) => ({
-            item: x.key,
-            title: x.description,
-            display: <span>{x.key}:</span>,
+          items={preset.recentScopes.map((x) => ({
+            item: x,
+            title: x,
+            display: <span>({x})</span>,
           }))}
         />
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
           searchBarClassName={classNames(classes.searchBar, {
-            [classes.noTopPadding]: Boolean(editor.recentTypes?.length),
+            [classes.noTopPadding]: Boolean(preset.recentScopes?.length),
           })}
           onClick={(key) => this.handleClick(key)}
-          items={TYPES.map((x) => ({
-            item: x.key,
-            title: `${x.key}:`,
-            description: x.description,
+          items={preset.scopes.map((x) => ({
+            item: x,
+            title: `(${x})`,
           }))}
         />
       </span>
     );
 
-    return (
+    return preset.scopes.length || preset.recentScopes.length ? (
       <Dropdown
         overlayClassName={classes.overlay}
         overlay={menu}
@@ -150,11 +149,11 @@ class TypePickerComponent extends React.Component<Props, State> {
           onMouseEnter={() => this.handleHover(true)}
           onMouseLeave={() => !visible && this.handleHover(false)}
           shape={'round'}
-          icon={<FaTags className={classes.buttonIcon} />}>
+          icon={<BsBraces className={classes.buttonIcon} />}>
           <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
             {hovered ? (
               <>
-                type: <AiOutlineDown />
+                (scope) <AiOutlineDown />
               </>
             ) : (
               <></>
@@ -162,22 +161,24 @@ class TypePickerComponent extends React.Component<Props, State> {
           </span>
         </Button>
       </Dropdown>
+    ) : (
+      <></>
     );
   }
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { preset } = state;
+  return { preset };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    typeSelected: (type) => dispatch(TypeSelectAction.get(type)),
+    scopeSelected: (scope) => dispatch(ScopeSelectAction.get(scope)),
   };
 }
 
 export default connect<ReduxProps, DispatchProps, OwnProps, AppState>(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(TypePickerComponent));
+)(withStyles(styles)(ScopePickerComponent));
