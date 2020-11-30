@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "debug": "cross-env NODE_OPTIONS='--inspect' next dev --hostname 127.0.0.1 --port 2662",
-    "lint": "eslint . && prettier --check \"./**/*.{css,md,json}\" --config ./.prettierrc --loglevel warn",
-    "format": "eslint --fix . && prettier --write \"./**/*.{css,md,json}\" --config ./.prettierrc --loglevel warn",
+    "lint": "eslint . && prettier --check \"./**/*.{css,md,json,js}\" --config ./.prettierrc --loglevel warn",
+    "format": "eslint --fix . && prettier --write \"./**/*.{css,md,json,js}\" --config ./.prettierrc --loglevel warn",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -106,11 +106,8 @@
     }
   },
   "lint-staged": {
-    "./**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "./**/*.{css,md,json}": [
-      "prettier --write --config ./.prettierrc --loglevel warn"
+    "*": [
+      "npm run format"
     ]
   }
 }
