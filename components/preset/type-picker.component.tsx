@@ -95,8 +95,6 @@ class TypePickerComponent extends React.Component<Props, State> {
   }
 
   handleClick(key: string): void {
-    const { preset } = this.props;
-
     setTimeout(() => {
       const { typeSelected } = this.props;
       const type = this.types.find((x) => x.key === key);

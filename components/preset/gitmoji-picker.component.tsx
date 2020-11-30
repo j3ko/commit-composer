@@ -112,8 +112,6 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   handleClick(key: string): void {
-    const { preset } = this.props;
-
     setTimeout(() => {
       const { gitmojiSelected } = this.props;
       const gitmoji = GITMOJIS.find((x) => x.shortcode === key);

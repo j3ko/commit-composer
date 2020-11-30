@@ -7,10 +7,9 @@ import { AiOutlineDown } from 'react-icons/ai';
 import { BsBraces } from 'react-icons/bs';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
-import { TypeDefinition, TYPES } from 'shared/presets/types';
 import { AppState, PresetState } from 'state';
 
-import { ScopeSelectAction, TypeSelectAction } from './state/preset.action';
+import { ScopeSelectAction } from './state/preset.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
