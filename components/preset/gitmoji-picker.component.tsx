@@ -1,6 +1,6 @@
 import { Button, Dropdown, Space, Switch, Typography } from 'antd';
 import classNames from 'classnames';
-import RecentListComponent from 'components/common/recent-list.component';
+import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineCheck, AiOutlineClose, AiOutlineDown } from 'react-icons/ai';
@@ -139,15 +139,17 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={preset.recentGitmojis.map((x) => ({
-            item: x.shortcode,
-            title: x.description,
-            display: (
-              <span aria-label={x.shortcode} role="img">
-                {x.icon}
-              </span>
-            ),
-          }))}
+          items={preset.recentGitmojis.map(
+            (x): RecentItem => ({
+              item: x.shortcode,
+              tooltip: x.description,
+              display: (
+                <span aria-label={x.shortcode} role="img">
+                  {x.icon}
+                </span>
+              ),
+            }),
+          )}
         />
         <SearchableMenuComponent
           focus={visible}

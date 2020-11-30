@@ -1,6 +1,6 @@
 import { Button, Dropdown } from 'antd';
 import classNames from 'classnames';
-import RecentListComponent from 'components/common/recent-list.component';
+import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
@@ -115,11 +115,12 @@ class ScopePickerComponent extends React.Component<Props, State> {
           itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={preset.recentScopes.map((x) => ({
-            item: x,
-            title: x,
-            display: <span>({x})</span>,
-          }))}
+          items={preset.recentScopes.map(
+            (x): RecentItem => ({
+              item: x,
+              display: <span>({x})</span>,
+            }),
+          )}
         />
         <SearchableMenuComponent
           focus={visible}

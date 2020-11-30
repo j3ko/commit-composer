@@ -26,8 +26,8 @@ const styles = (theme: CommitComposerTheme) => ({
 export interface OwnProps {
   itemClassName?: string;
   item: string;
-  title: string;
-  display?: JSX.Element;
+  tooltip?: string;
+  display: JSX.Element;
   onClick?: (item: string) => void;
 }
 export interface ReduxProps {}
@@ -37,10 +37,14 @@ export interface State {}
 
 class RecentListItemComponent extends React.Component<Props, State> {
   render(): JSX.Element {
-    const { classes, display, item, itemClassName, title, onClick } = this.props;
+    const { classes, display, item, itemClassName, tooltip, onClick } = this.props;
 
     return (
-      <Tooltip overlayClassName={classes.tooltip} title={title} mouseLeaveDelay={0}>
+      <Tooltip
+        mouseEnterDelay={1.5}
+        overlayClassName={classes.tooltip}
+        title={tooltip}
+        mouseLeaveDelay={0}>
         <Col
           className={classNames(classes.itemContainer, itemClassName)}
           onClick={() => onClick?.(item)}>

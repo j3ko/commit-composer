@@ -1,6 +1,6 @@
 import { Button, Dropdown } from 'antd';
 import classNames from 'classnames';
-import RecentListComponent from 'components/common/recent-list.component';
+import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
@@ -122,11 +122,13 @@ class TypePickerComponent extends React.Component<Props, State> {
           itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={preset.recentTypes.map((x) => ({
-            item: x.key,
-            title: x.description,
-            display: <span>{x.key}:</span>,
-          }))}
+          items={preset.recentTypes.map(
+            (x): RecentItem => ({
+              item: x.key,
+              tooltip: x.description,
+              display: <span>{x.key}:</span>,
+            }),
+          )}
         />
         <SearchableMenuComponent
           focus={visible}
