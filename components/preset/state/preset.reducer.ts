@@ -18,10 +18,12 @@ const presetReducer = (
 ): PresetState => {
   if (GitmojiSelectAction.is(action)) {
     const { payload } = action;
-    const map = state.recentGitmojis.map((x) => ({ key: x.shortcode, value: x }));
-    const cache = new LRUCache<GitmojiDefinition>(map, 20);
-    cache.write(payload.shortcode, payload);
-    state.recentGitmojis = cache.toArray();
+    if (payload) {
+      const map = state.recentGitmojis.map((x) => ({ key: x.shortcode, value: x }));
+      const cache = new LRUCache<GitmojiDefinition>(map, 20);
+      cache.write(payload.shortcode, payload);
+      state.recentGitmojis = cache.toArray();
+    }
   } else if (TypeSelectAction.is(action)) {
     const { payload } = action;
     const map = state.recentTypes.map((x) => ({ key: x.key, value: x }));

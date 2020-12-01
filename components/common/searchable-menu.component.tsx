@@ -61,6 +61,7 @@ type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchPr
 export interface State {
   searchInputRef: React.RefObject<Input>;
   visibleItems: RenderedItem[];
+  query: string;
 }
 
 class SearchableMenuComponent extends React.Component<Props, State> {
@@ -69,6 +70,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     this.state = {
       searchInputRef: React.createRef(),
       visibleItems: this.renderItems(props.items),
+      query: '',
     };
   }
 
@@ -76,7 +78,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     this.focus();
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>): void {
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
     const { focus, items } = this.props;
 
     if (!prevProps.focus && focus) {
@@ -85,7 +87,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
 
     if (prevProps.items !== items) {
       this.setState({
-        visibleItems: this.renderItems(items),
+        visibleItems: this.renderItems(items, prevState.query),
       });
     }
   }
@@ -120,7 +122,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
   onSearch(query?: string): void {
     const { items } = this.props;
     const visibleItems = this.renderItems(items, query);
-    this.setState({ visibleItems });
+    this.setState({ visibleItems, query });
   }
 
   onSelect(item: string): void {
@@ -187,7 +189,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
 
   render(): JSX.Element {
     const { classes, className, searchBarClassName, children } = this.props;
-    const { visibleItems } = this.state;
+    const { visibleItems, query } = this.state;
 
     return (
       <div className={classNames(classes.root, className)}>
@@ -202,7 +204,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
             />
             <span
               className={classNames('ant-input-suffix', {
-                [classes.hidden]: !this.state.searchInputRef?.current?.input.value,
+                [classes.hidden]: !query,
               })}>
               <span
                 tabIndex={-1}
@@ -232,7 +234,7 @@ class SearchableMenuComponent extends React.Component<Props, State> {
             ))}
           </Col>
         </Row>
-        <Row onClick={(e) => e.stopPropagation()}>
+        <Row>
           <Col flex="auto">{children}</Col>
         </Row>
       </div>

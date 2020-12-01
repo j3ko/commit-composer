@@ -14,11 +14,14 @@ export class CommitMessageLib {
     return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, `$2(${scope}): $5$10$11`);
   }
 
-  static setGitmoji(message: string, gitmoji: GitmojiDefinition, useShortcode = false): string {
-    return (message || '').replace(
-      CommitMessageLib.SUBJECT_REGEX,
-      `$1 ${useShortcode ? gitmoji.shortcode : gitmoji.icon} $11`,
-    );
+  static setGitmoji(
+    message: string,
+    gitmoji: GitmojiDefinition | null,
+    useShortcode = false,
+  ): string {
+    const value = gitmoji ? `$1 ${useShortcode ? gitmoji.shortcode : gitmoji.icon} $11` : `$1 $11`;
+
+    return (message || '').replace(CommitMessageLib.SUBJECT_REGEX, value);
   }
 
   static format(commit: Commit, ruleset: QualifiedConfig): string {
