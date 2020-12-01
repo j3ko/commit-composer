@@ -1,4 +1,8 @@
-import { GitmojiSelectAction, TypeSelectAction } from 'components/preset/state/preset.action';
+import {
+  GitmojiSelectAction,
+  ScopeSelectAction,
+  TypeSelectAction,
+} from 'components/preset/state/preset.action';
 import { Epic } from 'redux-observable';
 import { PlainAction } from 'redux-typed-actions';
 import { concat, of } from 'rxjs';
@@ -15,6 +19,7 @@ export const updateValidation: Epic<PlainAction, PlainAction, AppState> = (actio
       EditorFormatAction.type,
       GitmojiSelectAction.type,
       TypeSelectAction.type,
+      ScopeSelectAction.type,
     )
     .pipe(
       debounceTime(250),

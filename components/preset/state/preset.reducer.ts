@@ -32,10 +32,12 @@ const presetReducer = (
     state.recentTypes = cache.toArray();
   } else if (ScopeSelectAction.is(action)) {
     const { payload } = action;
-    const map = state.recentScopes.map((x) => ({ key: x, value: x }));
-    const cache = new LRUCache<string>(map, 20);
-    cache.write(payload, payload);
-    state.recentScopes = cache.toArray();
+    if (payload) {
+      const map = state.recentScopes.map((x) => ({ key: x, value: x }));
+      const cache = new LRUCache<string>(map, 20);
+      cache.write(payload, payload);
+      state.recentScopes = cache.toArray();
+    }
   } else if (ToggleShortcodeAction.is(action)) {
     state.useShortcode = action.payload;
   } else if (RulesetParseAsync.success.is(action)) {
