@@ -1,4 +1,4 @@
-import { Button, Dropdown } from 'antd';
+import { Button, Col, Dropdown, Row } from 'antd';
 import classNames from 'classnames';
 import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
@@ -65,6 +65,11 @@ const styles = (theme: CommitComposerTheme) => ({
       backgroundColor: theme.itemHoverBG,
     },
   },
+  actionContainer: {
+    padding: '4px 9px',
+    width: '100%',
+    backgroundColor: theme.lighter,
+  },
 });
 
 export interface OwnProps {}
@@ -72,7 +77,7 @@ export interface ReduxProps {
   preset: PresetState;
 }
 export interface DispatchProps {
-  typeSelected: (type: TypeDefinition) => void;
+  typeSelected: (type: TypeDefinition | null) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
@@ -92,6 +97,11 @@ class TypePickerComponent extends React.Component<Props, State> {
   get types(): TypeDefinition[] {
     const { preset } = this.props;
     return preset.types.length ? preset.types : TYPES;
+  }
+
+  handleClear(): void {
+    const { typeSelected } = this.props;
+    typeSelected(null);
   }
 
   handleClick(key: string): void {
@@ -141,8 +151,15 @@ class TypePickerComponent extends React.Component<Props, State> {
             item: x.key,
             title: `${x.key}:`,
             description: x.description,
-          }))}
-        />
+          }))}>
+          <Row justify="space-between" className={classes.actionContainer}>
+            <Col>
+              <Button size="small" type="link" onClick={() => this.handleClear()}>
+                Clear
+              </Button>
+            </Col>
+          </Row>
+        </SearchableMenuComponent>
       </span>
     );
 
@@ -150,6 +167,7 @@ class TypePickerComponent extends React.Component<Props, State> {
       <Dropdown
         overlayClassName={classes.overlay}
         overlay={menu}
+        visible={visible}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
         trigger={['click']}
         placement="bottomRight">

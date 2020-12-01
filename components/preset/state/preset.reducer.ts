@@ -26,10 +26,12 @@ const presetReducer = (
     }
   } else if (TypeSelectAction.is(action)) {
     const { payload } = action;
-    const map = state.recentTypes.map((x) => ({ key: x.key, value: x }));
-    const cache = new LRUCache<TypeDefinition>(map, 20);
-    cache.write(payload.key, payload);
-    state.recentTypes = cache.toArray();
+    if (payload) {
+      const map = state.recentTypes.map((x) => ({ key: x.key, value: x }));
+      const cache = new LRUCache<TypeDefinition>(map, 20);
+      cache.write(payload.key, payload);
+      state.recentTypes = cache.toArray();
+    }
   } else if (ScopeSelectAction.is(action)) {
     const { payload } = action;
     if (payload) {

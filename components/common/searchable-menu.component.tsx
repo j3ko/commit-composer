@@ -1,4 +1,4 @@
-import { Col, Input, Row, Space, Typography } from 'antd';
+import { Col, Input, Row, Typography } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
@@ -33,6 +33,7 @@ const styles = (theme: CommitComposerTheme) => ({
   description: {
     fontSize: 12,
     paddingRight: 9,
+    marginBottom: '0 !important',
   },
   searchRow: {},
   itemRow: {
@@ -130,30 +131,32 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     this.props.onClick?.(item);
   }
 
-  renderItems(items: SearchableItem[], query?: string): RenderedItem[] {
+  highlight(input: string, regex?: RegExp): { elem: JSX.Element; found: boolean } {
     const { classes } = this.props;
 
-    const highlight = (input: string, regex?: RegExp): { elem: JSX.Element; found: boolean } => {
-      if (input === '' || input === undefined) {
-        return;
-      }
+    if (input === '' || input === undefined) {
+      return;
+    }
 
-      const parts: React.ReactNode[] = input.split(regex);
-      let found = false;
+    const parts: React.ReactNode[] = input.split(regex);
+    let found = false;
 
-      for (let i = 1; i < parts.length; i += 2) {
-        parts[i] = (
-          <span key={i} className={classes.highlight}>
-            {parts[i]}
-          </span>
-        );
-        found = true;
-      }
-      return {
-        elem: <Typography.Text>{parts}</Typography.Text>,
-        found,
-      };
+    for (let i = 1; i < parts.length; i += 2) {
+      parts[i] = (
+        <span key={i} className={classes.highlight}>
+          {parts[i]}
+        </span>
+      );
+      found = true;
+    }
+    return {
+      elem: <>{parts}</>,
+      found,
     };
+  }
+
+  renderItems(items: SearchableItem[], query?: string): RenderedItem[] {
+    const { classes } = this.props;
 
     const escapeRegExp = (str: string): string => {
       return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -162,18 +165,23 @@ class SearchableMenuComponent extends React.Component<Props, State> {
     return items
       .map((x) => {
         const titleRegex = query ? new RegExp(`(${escapeRegExp(query)})`, 'gi') : undefined;
-        const title = highlight(x.title, titleRegex);
+        const title = this.highlight(x.title, titleRegex);
         const descriptionRegex = query ? new RegExp(`(${escapeRegExp(query)})`, 'gi') : undefined;
-        const description = highlight(x.description, descriptionRegex);
+        const description = this.highlight(x.description, descriptionRegex);
 
         const found =
           query === undefined || query === '' || title.found || (description && description.found);
 
         if (description) {
-          description.elem = React.cloneElement(description.elem, {
-            type: 'secondary',
-            className: classes.description,
-          });
+          description.elem = (
+            <Typography.Paragraph type="secondary" className={classes.description} ellipsis>
+              {description.elem}
+            </Typography.Paragraph>
+          );
+        }
+
+        if (title) {
+          title.elem = <Typography.Text>{title.elem}</Typography.Text>;
         }
 
         return {
@@ -226,10 +234,10 @@ class SearchableMenuComponent extends React.Component<Props, State> {
                 key={x.item}
                 item={x.item}
                 icon={x.icon}>
-                <Space size={1} direction="vertical">
+                <>
                   {x.title}
                   {x.description}
-                </Space>
+                </>
               </SearchableMenuItemComponent>
             ))}
           </Col>
