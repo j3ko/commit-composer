@@ -1,51 +1,40 @@
-import { Button, Dropdown, Space, Switch, Typography } from 'antd';
+import { Button, Dropdown } from 'antd';
 import classNames from 'classnames';
-import RecentListComponent from 'components/common/recent-list.component';
+import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
-import { AiOutlineCheck, AiOutlineClose, AiOutlineDown } from 'react-icons/ai';
+import { AiOutlineDown } from 'react-icons/ai';
+import { FaTags } from 'react-icons/fa';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
-import { GitmojiDefinition, GITMOJIS } from 'shared/presets/gitmojis';
-import { AppState, EditorState } from 'state';
+import { TypeDefinition, TYPES } from 'shared/presets/types';
+import { AppState, PresetState } from 'state';
 
-import { GitmojiSelectAction, ToggleShortcodeAction } from './state/editor.action';
+import { TypeSelectAction } from './state/preset.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
-      maxWidth: 380,
+      maxWidth: 585,
     },
   },
   items: {
     maxHeight: 250,
   },
-  gitmoji: {
-    paddingRight: 8,
-  },
   button: {
     display: 'flex',
-    padding: '3px 8px',
+    padding: '2px 8px',
   },
   buttonIcon: {
-    position: 'relative',
     height: 26,
     width: 14,
-    '&:after': {
-      content: `'🎉'`,
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%,-50%)',
-      height: 26,
-      width: 26,
-    },
   },
   buttonText: {
-    height: 26,
-    width: 76,
-    paddingTop: '1px',
+    width: 58,
+    paddingTop: '2px',
+    margin: '0 !important',
     textAlign: 'right',
     overflow: 'clip',
     transition: 'all 0.3s ease, opacity 0.5s ease 0.3s',
@@ -76,24 +65,14 @@ const styles = (theme: CommitComposerTheme) => ({
       backgroundColor: theme.itemHoverBG,
     },
   },
-  actionContainer: {
-    padding: '4px 9px',
-    justifyContent: 'flex-end',
-    width: '100%',
-    backgroundColor: theme.lighter,
-  },
-  actionText: {
-    fontSize: 12,
-  },
 });
 
 export interface OwnProps {}
 export interface ReduxProps {
-  editor: EditorState;
+  preset: PresetState;
 }
 export interface DispatchProps {
-  gitmojiSelected: (gitmoji: GitmojiDefinition) => void;
-  toggleShortcode: (value: boolean) => void;
+  typeSelected: (type: TypeDefinition) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
@@ -101,7 +80,7 @@ export interface State {
   hovered: boolean;
 }
 
-class GitmojiPickerComponent extends React.Component<Props, State> {
+class TypePickerComponent extends React.Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
     this.state = {
@@ -110,11 +89,16 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
     };
   }
 
+  get types(): TypeDefinition[] {
+    const { preset } = this.props;
+    return preset.types.length ? preset.types : TYPES;
+  }
+
   handleClick(key: string): void {
     setTimeout(() => {
-      const { gitmojiSelected } = this.props;
-      const gitmoji = GITMOJIS.find((x) => x.shortcode === key);
-      gitmojiSelected(gitmoji);
+      const { typeSelected } = this.props;
+      const type = this.types.find((x) => x.key === key);
+      typeSelected(type);
       this.handleVisibilityChange(false);
     }, 200);
   }
@@ -129,7 +113,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor, toggleShortcode } = this.props;
+    const { classes, preset } = this.props;
     const { hovered, visible } = this.state;
 
     const menu = (
@@ -138,44 +122,27 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={editor.recentGitmojis.map((x) => ({
-            item: x.shortcode,
-            title: x.description,
-            display: (
-              <span aria-label={x.shortcode} role="img">
-                {x.icon}
-              </span>
-            ),
-          }))}
+          items={preset.recentTypes.map(
+            (x): RecentItem => ({
+              item: x.key,
+              tooltip: x.description,
+              display: <span>{x.key}:</span>,
+            }),
+          )}
         />
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
           searchBarClassName={classNames(classes.searchBar, {
-            [classes.noTopPadding]: Boolean(editor.recentGitmojis?.length),
+            [classes.noTopPadding]: Boolean(preset.recentTypes?.length),
           })}
           onClick={(key) => this.handleClick(key)}
-          items={GITMOJIS.map((x) => ({
-            item: x.shortcode,
-            title: x.shortcode,
+          items={this.types.map((x) => ({
+            item: x.key,
+            title: `${x.key}:`,
             description: x.description,
-            icon: (
-              <span aria-label={x.shortcode} role="img" className={classes.gitmoji}>
-                {x.icon}
-              </span>
-            ),
-          }))}>
-          <Space className={classes.actionContainer}>
-            <Typography.Text className={classes.actionText}>Shortcode:</Typography.Text>
-            <Switch
-              size="small"
-              defaultChecked={editor.useShortcode}
-              checkedChildren={<AiOutlineCheck />}
-              unCheckedChildren={<AiOutlineClose />}
-              onChange={(x) => toggleShortcode(x)}
-            />
-          </Space>
-        </SearchableMenuComponent>
+          }))}
+        />
       </span>
     );
 
@@ -191,11 +158,11 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           onMouseEnter={() => this.handleHover(true)}
           onMouseLeave={() => !visible && this.handleHover(false)}
           shape={'round'}
-          icon={<span aria-label="gitmoji" role="img" className={classes.buttonIcon}></span>}>
+          icon={<FaTags className={classes.buttonIcon} />}>
           <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
             {hovered ? (
               <>
-                :gitmoji: <AiOutlineDown />
+                type: <AiOutlineDown />
               </>
             ) : (
               <></>
@@ -208,18 +175,17 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { preset } = state;
+  return { preset };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    gitmojiSelected: (gitmoji) => dispatch(GitmojiSelectAction.get(gitmoji)),
-    toggleShortcode: (value) => dispatch(ToggleShortcodeAction.get(value)),
+    typeSelected: (type) => dispatch(TypeSelectAction.get(type)),
   };
 }
 
 export default connect<ReduxProps, DispatchProps, OwnProps, AppState>(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(GitmojiPickerComponent));
+)(withStyles(styles)(TypePickerComponent));

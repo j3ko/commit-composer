@@ -7,8 +7,8 @@ import RecentListItemComponent from './recent-list-item.component';
 
 export type RecentItem = {
   item: string;
-  title: string;
-  display?: JSX.Element;
+  tooltip?: string;
+  display: JSX.Element;
 };
 
 const styles = {
@@ -50,7 +50,7 @@ class RecentListComponent extends React.Component<Props, State> {
                 itemClassName={itemClassName}
                 key={x.item}
                 item={x.item}
-                title={x.title}
+                tooltip={x.tooltip}
                 display={x.display}
                 onClick={(item) => onClick?.(item)}
               />

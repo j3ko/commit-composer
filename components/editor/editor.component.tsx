@@ -29,9 +29,13 @@ const styles = (theme: CommitComposerTheme) => ({
     },
   },
   buttons: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
     padding: 8,
-    width: '100%',
+    height: '100%',
     justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
 });
 
@@ -70,7 +74,9 @@ class EditorComponent extends React.Component<Props, State> {
           allowClear
         />
 
-        <Space className={classes.buttons}>{children}</Space>
+        <Space direction="vertical" className={classes.buttons}>
+          {children}
+        </Space>
       </div>
     );
   }

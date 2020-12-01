@@ -1,5 +1,6 @@
 import configReducer from 'components/config/state/config.reducer';
 import editorReducer from 'components/editor/state/editor.reducer';
+import presetReducer from 'components/preset/state/preset.reducer';
 import { produce } from 'immer';
 import { createMigrate, persistReducer } from 'redux-persist';
 import { createBlacklistFilter } from 'redux-persist-transform-filter';
@@ -27,6 +28,7 @@ const persistConfig = {
 const rootReducer = produce((state: AppState = new AppState(), action: PlainAction): void => {
   state.editor = editorReducer(state.editor, action, state);
   state.config = configReducer(state.config, action);
+  state.preset = presetReducer(state.preset, action);
 }, new AppState());
 
 const persistedReducer = persistReducer<AppState>(persistConfig, rootReducer);

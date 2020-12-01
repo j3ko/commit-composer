@@ -1,17 +1,16 @@
+import {
+  GitmojiSelectAction,
+  ScopeSelectAction,
+  TypeSelectAction,
+} from 'components/preset/state/preset.action';
 import { PlainAction } from 'redux-typed-actions';
 import { CommitMessageLib } from 'shared/commit-message.lib';
-import { LRUCache } from 'shared/lru-cache';
-import { GitmojiDefinition } from 'shared/presets/gitmojis';
-import { TypeDefinition } from 'shared/presets/types';
 import { AppState, EditorState } from 'state';
 
 import {
   EditorFormatAction,
   EditorLoadAction,
   EditorUpdatedAction,
-  GitmojiSelectAction,
-  ToggleShortcodeAction,
-  TypeSelectAction,
   ValidationUpdatedAsync,
 } from './editor.action';
 
@@ -37,22 +36,17 @@ const editorReducer = (
     state.loading = action.payload;
   } else if (GitmojiSelectAction.is(action)) {
     const { payload } = action;
-    state.editorValue = CommitMessageLib.setGitmoji(state.editorValue, payload, state.useShortcode);
-
-    const map = state.recentGitmojis.map((x) => ({ key: x.shortcode, value: x }));
-    const cache = new LRUCache<GitmojiDefinition>(map, 20);
-    cache.write(payload.shortcode, payload);
-    state.recentGitmojis = cache.toArray();
+    state.editorValue = CommitMessageLib.setGitmoji(
+      state.editorValue,
+      payload,
+      appState.preset.useShortcode,
+    );
   } else if (TypeSelectAction.is(action)) {
     const { payload } = action;
-    state.editorValue = CommitMessageLib.setType(state.editorValue, action.payload);
-
-    const map = state.recentTypes.map((x) => ({ key: x.key, value: x }));
-    const cache = new LRUCache<TypeDefinition>(map, 20);
-    cache.write(payload.key, payload);
-    state.recentTypes = cache.toArray();
-  } else if (ToggleShortcodeAction.is(action)) {
-    state.useShortcode = action.payload;
+    state.editorValue = CommitMessageLib.setType(state.editorValue, payload);
+  } else if (ScopeSelectAction.is(action)) {
+    const { payload } = action;
+    state.editorValue = CommitMessageLib.setScope(state.editorValue, payload);
   }
 
   return state;
