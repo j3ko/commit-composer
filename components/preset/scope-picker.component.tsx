@@ -1,4 +1,4 @@
-import { Button, Dropdown } from 'antd';
+import { Button, Col, Dropdown, Row } from 'antd';
 import classNames from 'classnames';
 import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
@@ -16,7 +16,7 @@ const styles = (theme: CommitComposerTheme) => ({
     border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
-      maxWidth: 585,
+      maxWidth: 400,
     },
   },
   items: {
@@ -64,6 +64,11 @@ const styles = (theme: CommitComposerTheme) => ({
       backgroundColor: theme.itemHoverBG,
     },
   },
+  actionContainer: {
+    padding: '4px 9px',
+    width: '100%',
+    backgroundColor: theme.lighter,
+  },
 });
 
 export interface OwnProps {}
@@ -86,6 +91,11 @@ class ScopePickerComponent extends React.Component<Props, State> {
       visible: false,
       hovered: false,
     };
+  }
+
+  handleClear(): void {
+    const { scopeSelected } = this.props;
+    scopeSelected(null);
   }
 
   handleClick(key: string): void {
@@ -132,8 +142,15 @@ class ScopePickerComponent extends React.Component<Props, State> {
           items={preset.scopes.map((x) => ({
             item: x,
             title: `(${x})`,
-          }))}
-        />
+          }))}>
+          <Row justify="space-between" className={classes.actionContainer}>
+            <Col>
+              <Button size="small" type="link" onClick={() => this.handleClear()}>
+                Clear
+              </Button>
+            </Col>
+          </Row>
+        </SearchableMenuComponent>
       </span>
     );
 
@@ -141,6 +158,7 @@ class ScopePickerComponent extends React.Component<Props, State> {
       <Dropdown
         overlayClassName={classes.overlay}
         overlay={menu}
+        visible={visible}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
         trigger={['click']}
         placement="bottomRight">

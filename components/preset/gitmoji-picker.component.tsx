@@ -1,4 +1,4 @@
-import { Button, Dropdown, Space, Switch, Typography } from 'antd';
+import { Button, Col, Dropdown, Row, Space, Switch, Typography } from 'antd';
 import classNames from 'classnames';
 import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
@@ -16,7 +16,7 @@ const styles = (theme: CommitComposerTheme) => ({
     border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
-      maxWidth: 380,
+      maxWidth: 400,
     },
   },
   items: {
@@ -79,7 +79,6 @@ const styles = (theme: CommitComposerTheme) => ({
   },
   actionContainer: {
     padding: '4px 9px',
-    justifyContent: 'flex-end',
     width: '100%',
     backgroundColor: theme.lighter,
   },
@@ -93,7 +92,7 @@ export interface ReduxProps {
   preset: PresetState;
 }
 export interface DispatchProps {
-  gitmojiSelected: (gitmoji: GitmojiDefinition) => void;
+  gitmojiSelected: (gitmoji: GitmojiDefinition | null) => void;
   toggleShortcode: (value: boolean) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
@@ -109,6 +108,11 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
       visible: false,
       hovered: false,
     };
+  }
+
+  handleClear(): void {
+    const { gitmojiSelected } = this.props;
+    gitmojiSelected(null);
   }
 
   handleClick(key: string): void {
@@ -168,16 +172,25 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
               </span>
             ),
           }))}>
-          <Space className={classes.actionContainer}>
-            <Typography.Text className={classes.actionText}>Shortcode:</Typography.Text>
-            <Switch
-              size="small"
-              defaultChecked={preset.useShortcode}
-              checkedChildren={<AiOutlineCheck />}
-              unCheckedChildren={<AiOutlineClose />}
-              onChange={(x) => toggleShortcode(x)}
-            />
-          </Space>
+          <Row justify="space-between" className={classes.actionContainer}>
+            <Col>
+              <Button size="small" type="link" onClick={() => this.handleClear()}>
+                Clear
+              </Button>
+            </Col>
+            <Col>
+              <Space>
+                <Typography.Text className={classes.actionText}>Shortcode:</Typography.Text>
+                <Switch
+                  size="small"
+                  defaultChecked={preset.useShortcode}
+                  checkedChildren={<AiOutlineCheck />}
+                  unCheckedChildren={<AiOutlineClose />}
+                  onChange={(x) => toggleShortcode(x)}
+                />
+              </Space>
+            </Col>
+          </Row>
         </SearchableMenuComponent>
       </span>
     );
@@ -186,6 +199,7 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
       <Dropdown
         overlayClassName={classes.overlay}
         overlay={menu}
+        visible={visible}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
         trigger={['click']}
         placement="bottomRight">
