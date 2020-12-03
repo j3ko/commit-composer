@@ -10,3 +10,4 @@ Commit-composer is a tool for composing conventional commit messages. Powered by
 - [conventional-changelog/standard-version](https://github.com/conventional-changelog/standard-version) - changelog generation - and version bumping
 - [VSCode Conventional Commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits) - vscode conventional commits extension
 - [commitizen/cz-cli](http://commitizen.github.io/cz-cli) - cli tool for creating commits
+- [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) - Chris Beams
