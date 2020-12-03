@@ -19,7 +19,9 @@ export interface State {
 }
 
 export class Changelog extends React.Component<Props, State> {
-  static getLayout = (page: JSX.Element): JSX.Element => <MainLayout>{page}</MainLayout>;
+  static getLayout = (page: JSX.Element): JSX.Element => (
+    <MainLayout title="Changelog">{page}</MainLayout>
+  );
 
   constructor(props: Readonly<Props>) {
     super(props);
