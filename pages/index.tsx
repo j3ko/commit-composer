@@ -49,7 +49,9 @@ type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchPr
 export interface State {}
 
 export class Index extends React.Component<Props, State> {
-  static getLayout = (page: JSX.Element): JSX.Element => <MainLayout>{page}</MainLayout>;
+  static getLayout = (page: JSX.Element): JSX.Element => (
+    <MainLayout title="Conventional commit composer">{page}</MainLayout>
+  );
 
   constructor(props: Readonly<Props>) {
     super(props);
