@@ -142,6 +142,7 @@ class ScopePickerComponent extends React.Component<Props, State> {
           items={preset.scopes.map((x) => ({
             item: x,
             title: `(${x})`,
+            description: 'Value from configuration',
           }))}>
           <Row justify="space-between" className={classes.actionContainer}>
             <Col>
