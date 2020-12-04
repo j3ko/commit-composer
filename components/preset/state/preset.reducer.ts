@@ -52,7 +52,7 @@ const presetReducer = (
       (x): TypeDefinition => ({
         key: x,
         title: x,
-        description: TYPE_LOOKUP[x]?.description,
+        description: TYPE_LOOKUP[x]?.description || 'Value from configuration',
       }),
     );
   }
