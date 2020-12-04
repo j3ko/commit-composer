@@ -102,8 +102,8 @@ class ScopePickerComponent extends React.Component<Props, State> {
     setTimeout(() => {
       const { scopeSelected } = this.props;
       scopeSelected(key);
-      this.handleVisibilityChange(false);
     }, 200);
+    this.handleVisibilityChange(false);
   }
 
   handleVisibilityChange(visible: boolean): void {

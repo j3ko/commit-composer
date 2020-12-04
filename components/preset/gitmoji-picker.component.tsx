@@ -120,8 +120,8 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
       const { gitmojiSelected } = this.props;
       const gitmoji = GITMOJIS.find((x) => x.shortcode === key);
       gitmojiSelected(gitmoji);
-      this.handleVisibilityChange(false);
     }, 200);
+    this.handleVisibilityChange(false);
   }
 
   handleVisibilityChange(visible: boolean): void {

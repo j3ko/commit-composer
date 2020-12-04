@@ -2,7 +2,7 @@ import { RulesetParseAsync } from 'components/config/state/config.action';
 import { PlainAction } from 'redux-typed-actions';
 import { LRUCache } from 'shared/lru-cache';
 import { GitmojiDefinition } from 'shared/presets/gitmojis';
-import { TypeDefinition } from 'shared/presets/types';
+import { TYPE_LOOKUP, TypeDefinition } from 'shared/presets/types';
 import { PresetState } from 'state';
 
 import {
@@ -46,6 +46,15 @@ const presetReducer = (
     const { payload } = action;
     const scopes = payload.ruleset?.rules['scope-enum'];
     state.scopes = scopes && scopes.length ? scopes[2] : [];
+
+    const types = payload.ruleset?.rules['type-enum'];
+    state.types = (types && types.length ? types[2] : []).map(
+      (x): TypeDefinition => ({
+        key: x,
+        title: x,
+        description: TYPE_LOOKUP[x]?.description,
+      }),
+    );
   }
 
   return state;

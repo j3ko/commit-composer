@@ -109,8 +109,8 @@ class TypePickerComponent extends React.Component<Props, State> {
       const { typeSelected } = this.props;
       const type = this.types.find((x) => x.key === key);
       typeSelected(type);
-      this.handleVisibilityChange(false);
     }, 200);
+    this.handleVisibilityChange(false);
   }
 
   handleVisibilityChange(visible: boolean): void {
