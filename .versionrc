@@ -1,5 +1,6 @@
 {
   "header": "# Changelog\n\n",
+  "releaseCommitMessageFormat": "chore(release): 🔖 {{currentTag}}",
   "scripts": {
     "postchangelog": "shx cp -R ./CHANGELOG.md ./public/ && git add ./public/CHANGELOG.md"
   }
