@@ -1,14 +1,14 @@
 {
   "name": "commit-composer",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 2662",
     "build": "next build",
     "start": "next start",
     "debug": "cross-env NODE_OPTIONS='--inspect' next dev --hostname 127.0.0.1 --port 2662",
-    "lint": "eslint . && prettier --check \"./**/*.{css,md,json}\" --config ./.prettierrc --loglevel warn",
-    "format": "eslint --fix . && prettier --write \"./**/*.{css,md,json}\" --config ./.prettierrc --loglevel warn",
+    "lint": "eslint . && prettier --check \"./**/*.{css,md,json,js}\" --config ./.prettierrc --loglevel warn",
+    "format": "eslint --fix . && prettier --write \"./**/*.{css,md,json,js}\" --config ./.prettierrc --loglevel warn",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -19,7 +19,7 @@
     "deploy:staging": "npm run build:clean && npm run build:download:staging && npm run sls && npm run build:upload:staging",
     "build:upload:staging": "aws s3 sync .serverless s3://j3ko-serverless-state/commit-composer/staging/.serverless --delete",
     "build:download:staging": "aws s3 sync s3://j3ko-serverless-state/commit-composer/staging/.serverless .serverless --delete",
-    "release": "standard-version --commit-all",
+    "release": "standard-version --commit-all --sign",
     "postinstall": "patch-package --use-yarn",
     "build:clean": "shx rm -rf .next && shx rm -rf .serverless_nextjs && shx rm -rf .serverless && shx rm -rf ./serverless.yml",
     "build:reset": "npm run build:clean && shx rm -rf node_modules"
@@ -38,6 +38,7 @@
     "classnames": "^2.2.6",
     "conventional-commit-types": "^3.0.0",
     "cosmiconfig": "^7.0.0",
+    "immer": "^8.0.0",
     "json5": "^2.1.3",
     "less": "^3.12.2",
     "next": "9.5.4",
@@ -105,11 +106,8 @@
     }
   },
   "lint-staged": {
-    "./**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "./**/*.{css,md,json}": [
-      "prettier --write --config ./.prettierrc --loglevel warn"
+    "*": [
+      "npm run format"
     ]
   }
 }

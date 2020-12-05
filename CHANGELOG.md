@@ -1,6 +1,21 @@
 # Changelog
 
 
+### [0.1.4](https://github.com/j3ko/commit-composer/compare/v0.1.3...v0.1.4) (2020-12-05)
+
+
+### Features
+
+* **editor:** ✨ add scope picker ([#17](https://github.com/j3ko/commit-composer/issues/17)) ([a2b4319](https://github.com/j3ko/commit-composer/commit/a2b431913943c95c09e411c141a3146580d78521)), closes [#3](https://github.com/j3ko/commit-composer/issues/3)
+* **editor:** ✨ add title section clear buttons ([#23](https://github.com/j3ko/commit-composer/issues/23)) ([d013500](https://github.com/j3ko/commit-composer/commit/d013500982cfcf5e89c14526ff939d3cc8ecc22b)), closes [#18](https://github.com/j3ko/commit-composer/issues/18)
+* **editor:** ✨ load type config into picker ([#28](https://github.com/j3ko/commit-composer/issues/28)) ([99c9bc7](https://github.com/j3ko/commit-composer/commit/99c9bc77f5719b45e7b53acd68fa501ed0323f70)), closes [#16](https://github.com/j3ko/commit-composer/issues/16)
+* 🎉 support unicode gitmojis ([19fc890](https://github.com/j3ko/commit-composer/commit/19fc890aedc7a4d48c7014fa14323f9cc19c3881)), closes [#9](https://github.com/j3ko/commit-composer/issues/9)
+
+
+### Bug Fixes
+
+* :bug: trigger validation on type update ([c71f1f1](https://github.com/j3ko/commit-composer/commit/c71f1f11b79e8573fea4619c9c340486ca76d1ad))
+
 ### [0.1.3](https://github.com/j3ko/commit-composer/compare/v0.1.2...v0.1.3) (2020-11-26)
 
 

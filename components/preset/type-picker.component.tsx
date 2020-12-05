@@ -1,6 +1,6 @@
-import { Button, Dropdown } from 'antd';
+import { Button, Col, Dropdown, Row } from 'antd';
 import classNames from 'classnames';
-import RecentListComponent from 'components/common/recent-list.component';
+import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
@@ -8,12 +8,13 @@ import { FaTags } from 'react-icons/fa';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
 import { TypeDefinition, TYPES } from 'shared/presets/types';
-import { AppState, EditorState } from 'state';
+import { AppState, PresetState } from 'state';
 
-import { TypeSelectAction } from './state/editor.action';
+import { TypeSelectAction } from './state/preset.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
       maxWidth: 585,
@@ -48,17 +49,35 @@ const styles = (theme: CommitComposerTheme) => ({
       minWidth: 'unset',
     },
   },
+  searchBar: {
+    backgroundColor: theme.lighter,
+    padding: 9,
+  },
+  noTopPadding: {
+    paddingTop: 0,
+  },
   recentList: {
     maxHeight: 70,
+    backgroundColor: theme.lighter,
+  },
+  recentItem: {
+    '&:hover': {
+      backgroundColor: theme.itemHoverBG,
+    },
+  },
+  actionContainer: {
+    padding: '4px 9px',
+    width: '100%',
+    backgroundColor: theme.lighter,
   },
 });
 
 export interface OwnProps {}
 export interface ReduxProps {
-  editor: EditorState;
+  preset: PresetState;
 }
 export interface DispatchProps {
-  typeSelected: (type: TypeDefinition) => void;
+  typeSelected: (type: TypeDefinition | null) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
@@ -75,13 +94,23 @@ class TypePickerComponent extends React.Component<Props, State> {
     };
   }
 
+  get types(): TypeDefinition[] {
+    const { preset } = this.props;
+    return preset.types.length ? preset.types : TYPES;
+  }
+
+  handleClear(): void {
+    const { typeSelected } = this.props;
+    typeSelected(null);
+  }
+
   handleClick(key: string): void {
     setTimeout(() => {
       const { typeSelected } = this.props;
-      const type = TYPES.find((x) => x.key === key);
+      const type = this.types.find((x) => x.key === key);
       typeSelected(type);
-      this.handleVisibilityChange(false);
     }, 200);
+    this.handleVisibilityChange(false);
   }
 
   handleVisibilityChange(visible: boolean): void {
@@ -94,30 +123,43 @@ class TypePickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor } = this.props;
+    const { classes, preset } = this.props;
     const { hovered, visible } = this.state;
 
     const menu = (
       <span className={classes.menu}>
         <RecentListComponent
+          itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={editor.recentTypes.map((x) => ({
-            item: x.key,
-            title: x.description,
-            display: <span>{x.key}:</span>,
-          }))}
+          items={preset.recentTypes.map(
+            (x): RecentItem => ({
+              item: x.key,
+              tooltip: x.description,
+              display: <span>{x.key}:</span>,
+            }),
+          )}
         />
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
+          searchBarClassName={classNames(classes.searchBar, {
+            [classes.noTopPadding]: Boolean(preset.recentTypes?.length),
+          })}
           onClick={(key) => this.handleClick(key)}
-          items={TYPES.map((x) => ({
+          items={this.types.map((x) => ({
             item: x.key,
             title: `${x.key}:`,
             description: x.description,
-          }))}
-        />
+          }))}>
+          <Row justify="space-between" className={classes.actionContainer}>
+            <Col>
+              <Button size="small" type="link" onClick={() => this.handleClear()}>
+                Clear
+              </Button>
+            </Col>
+          </Row>
+        </SearchableMenuComponent>
       </span>
     );
 
@@ -125,6 +167,7 @@ class TypePickerComponent extends React.Component<Props, State> {
       <Dropdown
         overlayClassName={classes.overlay}
         overlay={menu}
+        visible={visible}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
         trigger={['click']}
         placement="bottomRight">
@@ -150,8 +193,8 @@ class TypePickerComponent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { preset } = state;
+  return { preset };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {

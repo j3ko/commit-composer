@@ -33,11 +33,14 @@ const useStyles = (theme: CommitComposerTheme) =>
 
 interface HookProps {
   children: JSX.Element;
+  title?: string;
 }
 
-export const MainLayout: FunctionComponent<HookProps> = ({ children }) => {
+export const MainLayout: FunctionComponent<HookProps> = ({ children, title }) => {
   const theme = useTheme();
   const classes = useStyles(theme)();
+  const siteName = 'Commit-composer';
+  const pageTitle = title ? `${siteName} - ${title}` : siteName;
 
   return (
     <>
@@ -47,13 +50,25 @@ export const MainLayout: FunctionComponent<HookProps> = ({ children }) => {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="viewport" content="width=device-width,initial-scale=1" charSet="UTF-8" />
+        <title>{pageTitle}</title>
+        <meta property="og:site_name" content={siteName} />
+        <meta property="og:title" name="title" key="title" content={pageTitle} />
+        <meta
+          property="og:description"
+          name="description"
+          key="description"
+          content="A tool for composing conventional commit messages.  Commit-composer aims to bridge the gap between your favorite Git GUI and beautifully structured commit messages for your repository."
+        />
+        <meta
+          name="keywords"
+          content="commit-composer, conventional commits, commitlint, git, commitizen"></meta>
       </Head>
       <Layout className={classes.root}>
         <Header className={classes.header}>
           <Row justify="space-between">
             <Col>
               <Link href="/">
-                <h1 className={classes.titleContainer}>commit-composer.dev</h1>
+                <h1 className={classes.titleContainer}>Commit-composer.dev</h1>
               </Link>
             </Col>
             <Col className={classes.buttonContainer}>

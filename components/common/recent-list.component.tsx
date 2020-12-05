@@ -7,8 +7,8 @@ import RecentListItemComponent from './recent-list-item.component';
 
 export type RecentItem = {
   item: string;
-  title: string;
-  display?: JSX.Element;
+  tooltip?: string;
+  display: JSX.Element;
 };
 
 const styles = {
@@ -21,12 +21,13 @@ const styles = {
   },
   itemRow: {
     overflow: 'hidden',
-    maxHeight: 42,
+    maxHeight: 32,
   },
 };
 
 export interface OwnProps {
   className?: string;
+  itemClassName?: string;
   onClick?: (item: string) => void;
   items: RecentItem[];
 }
@@ -37,7 +38,7 @@ export interface State {}
 
 class RecentListComponent extends React.Component<Props, State> {
   render(): JSX.Element {
-    const { classes, items, className, onClick } = this.props;
+    const { classes, items, className, itemClassName, onClick } = this.props;
 
     return items && items.length ? (
       <Row className={classNames(classes.root, className)}>
@@ -46,9 +47,10 @@ class RecentListComponent extends React.Component<Props, State> {
           <Row className={classes.itemRow}>
             {items.map((x) => (
               <RecentListItemComponent
+                itemClassName={itemClassName}
                 key={x.item}
                 item={x.item}
-                title={x.title}
+                tooltip={x.tooltip}
                 display={x.display}
                 onClick={(item) => onClick?.(item)}
               />

@@ -1,5 +1,5 @@
 import { PlainAction } from 'redux-typed-actions';
-import { ConfigState } from 'state';
+import { ConfigState, Ruleset } from 'state';
 
 import {
   ConfigLoadAction,
@@ -12,36 +12,23 @@ const configReducer = (
   state: ConfigState = new ConfigState(),
   action: PlainAction,
 ): ConfigState => {
-  let result = state;
-
   if (ConfigUpdatedAction.is(action)) {
-    result = {
-      ...state,
-      configValue: action.payload,
-    };
+    state.configValue = action.payload;
   } else if (RulesetParseAsync.success.is(action)) {
-    result = {
-      ...state,
-      ruleset: action.payload,
+    const ruleset = new Ruleset();
+    state.ruleset = {
+      ...ruleset,
+      ...action.payload,
     };
   } else if (RulesetParseAsync.failure.is(action)) {
-    result = {
-      ...state,
-      ruleset: undefined,
-    };
+    state.ruleset = undefined;
   } else if (OpenConfigAction.is(action)) {
-    result = {
-      ...state,
-      isOpen: action.payload,
-    };
+    state.isOpen = action.payload;
   } else if (ConfigLoadAction.is(action)) {
-    result = {
-      ...state,
-      loading: action.payload,
-    };
+    state.loading = action.payload;
   }
 
-  return result;
+  return state;
 };
 
 export default configReducer;

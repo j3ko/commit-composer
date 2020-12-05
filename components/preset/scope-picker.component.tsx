@@ -1,51 +1,39 @@
-import { Button, Dropdown } from 'antd';
+import { Button, Col, Dropdown, Row } from 'antd';
 import classNames from 'classnames';
-import RecentListComponent from 'components/common/recent-list.component';
+import RecentListComponent, { RecentItem } from 'components/common/recent-list.component';
 import SearchableMenuComponent from 'components/common/searchable-menu.component';
 import React from 'react';
 import { AiOutlineDown } from 'react-icons/ai';
+import { BsBraces } from 'react-icons/bs';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { connect, Dispatch } from 'react-redux';
-import { GitmojiDefinition, GITMOJIS } from 'shared/presets/gitmojis';
-import { AppState, EditorState } from 'state';
+import { AppState, PresetState } from 'state';
 
-import { GitmojiSelectAction } from './state/editor.action';
+import { ScopeSelectAction } from './state/preset.action';
 
 const styles = (theme: CommitComposerTheme) => ({
   menu: {
+    border: `1px solid ${theme.lighter}`,
     display: 'block',
     [`@media only screen and (min-width: ${theme.screenMD})`]: {
-      maxWidth: 380,
+      maxWidth: 400,
     },
   },
   items: {
     maxHeight: 250,
   },
-  gitmoji: {
-    paddingRight: 8,
-  },
   button: {
     display: 'flex',
-    padding: '3px 8px',
+    padding: '2px 8px',
   },
   buttonIcon: {
-    position: 'relative',
     height: 26,
     width: 14,
-    '&:after': {
-      content: `'🎉'`,
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%,-50%)',
-      height: 26,
-      width: 26,
-    },
   },
   buttonText: {
-    height: 26,
-    width: 76,
-    paddingTop: '1px',
+    width: 74,
+    paddingTop: '2px',
+    margin: '0 !important',
     textAlign: 'right',
     overflow: 'clip',
     transition: 'all 0.3s ease, opacity 0.5s ease 0.3s',
@@ -60,17 +48,35 @@ const styles = (theme: CommitComposerTheme) => ({
       minWidth: 'unset',
     },
   },
+  searchBar: {
+    backgroundColor: theme.lighter,
+    padding: 9,
+  },
+  noTopPadding: {
+    paddingTop: 0,
+  },
   recentList: {
     maxHeight: 70,
+    backgroundColor: theme.lighter,
+  },
+  recentItem: {
+    '&:hover': {
+      backgroundColor: theme.itemHoverBG,
+    },
+  },
+  actionContainer: {
+    padding: '4px 9px',
+    width: '100%',
+    backgroundColor: theme.lighter,
   },
 });
 
 export interface OwnProps {}
 export interface ReduxProps {
-  editor: EditorState;
+  preset: PresetState;
 }
 export interface DispatchProps {
-  gitmojiSelected: (gitmoji: GitmojiDefinition) => void;
+  scopeSelected: (scope: string) => void;
 }
 type Props = WithStylesProps<typeof styles> & OwnProps & ReduxProps & DispatchProps;
 export interface State {
@@ -78,7 +84,7 @@ export interface State {
   hovered: boolean;
 }
 
-class GitmojiPickerComponent extends React.Component<Props, State> {
+class ScopePickerComponent extends React.Component<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
     this.state = {
@@ -87,13 +93,17 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
     };
   }
 
+  handleClear(): void {
+    const { scopeSelected } = this.props;
+    scopeSelected(null);
+  }
+
   handleClick(key: string): void {
     setTimeout(() => {
-      const { gitmojiSelected } = this.props;
-      const gitmoji = GITMOJIS.find((x) => x.markdown === key);
-      gitmojiSelected(gitmoji);
-      this.handleVisibilityChange(false);
+      const { scopeSelected } = this.props;
+      scopeSelected(key);
     }, 200);
+    this.handleVisibilityChange(false);
   }
 
   handleVisibilityChange(visible: boolean): void {
@@ -106,46 +116,50 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    const { classes, editor } = this.props;
+    const { classes, preset } = this.props;
     const { hovered, visible } = this.state;
 
     const menu = (
       <span className={classes.menu}>
         <RecentListComponent
+          itemClassName={classes.recentItem}
           className={classes.recentList}
           onClick={(key) => this.handleClick(key)}
-          items={editor.recentGitmojis.map((x) => ({
-            item: x.markdown,
-            title: x.description,
-            display: (
-              <span aria-label={x.markdown} role="img">
-                {x.icon}
-              </span>
-            ),
-          }))}
+          items={preset.recentScopes.map(
+            (x): RecentItem => ({
+              item: x,
+              display: <span>({x})</span>,
+            }),
+          )}
         />
         <SearchableMenuComponent
           focus={visible}
           className={classes.items}
+          searchBarClassName={classNames(classes.searchBar, {
+            [classes.noTopPadding]: Boolean(preset.recentScopes?.length),
+          })}
           onClick={(key) => this.handleClick(key)}
-          items={GITMOJIS.map((x) => ({
-            item: x.markdown,
-            title: x.markdown,
-            description: x.description,
-            icon: (
-              <span aria-label={x.markdown} role="img" className={classes.gitmoji}>
-                {x.icon}
-              </span>
-            ),
-          }))}
-        />
+          items={preset.scopes.map((x) => ({
+            item: x,
+            title: `(${x})`,
+            description: 'Value from configuration',
+          }))}>
+          <Row justify="space-between" className={classes.actionContainer}>
+            <Col>
+              <Button size="small" type="link" onClick={() => this.handleClear()}>
+                Clear
+              </Button>
+            </Col>
+          </Row>
+        </SearchableMenuComponent>
       </span>
     );
 
-    return (
+    return preset.scopes.length || preset.recentScopes.length ? (
       <Dropdown
         overlayClassName={classes.overlay}
         overlay={menu}
+        visible={visible}
         onVisibleChange={(visible) => this.handleVisibilityChange(visible)}
         trigger={['click']}
         placement="bottomRight">
@@ -154,11 +168,11 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           onMouseEnter={() => this.handleHover(true)}
           onMouseLeave={() => !visible && this.handleHover(false)}
           shape={'round'}
-          icon={<span aria-label="gitmoji" role="img" className={classes.buttonIcon}></span>}>
+          icon={<BsBraces className={classes.buttonIcon} />}>
           <span className={classNames(classes.buttonText, { [classes.hiddenText]: !hovered })}>
             {hovered ? (
               <>
-                :gitmoji: <AiOutlineDown />
+                (scope) <AiOutlineDown />
               </>
             ) : (
               <></>
@@ -166,22 +180,24 @@ class GitmojiPickerComponent extends React.Component<Props, State> {
           </span>
         </Button>
       </Dropdown>
+    ) : (
+      <></>
     );
   }
 }
 
 function mapStateToProps(state: AppState): ReduxProps {
-  const { editor } = state;
-  return { editor };
+  const { preset } = state;
+  return { preset };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    gitmojiSelected: (gitmoji) => dispatch(GitmojiSelectAction.get(gitmoji)),
+    scopeSelected: (scope) => dispatch(ScopeSelectAction.get(scope)),
   };
 }
 
 export default connect<ReduxProps, DispatchProps, OwnProps, AppState>(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(GitmojiPickerComponent));
+)(withStyles(styles)(ScopePickerComponent));

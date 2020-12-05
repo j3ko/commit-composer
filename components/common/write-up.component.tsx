@@ -23,7 +23,7 @@ class WriteUpComponent extends React.Component<Props, State> {
       <>
         <Row>
           <Typography.Title level={2} className={classes.title}>
-            What is commit-composer?
+            What is Commit-composer?
           </Typography.Title>
         </Row>
         <Row>
