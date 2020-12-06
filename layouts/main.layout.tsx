@@ -17,10 +17,18 @@ const useStyles = (theme: CommitComposerTheme) =>
       color: theme.lighter,
       backgroundColor: theme.dark,
       width: '100%',
+      [`@media only screen and (max-width: ${theme.screenSM})`]: {
+        padding: '0 10px',
+      },
     },
     titleContainer: {
       color: theme.lighter,
       cursor: 'pointer',
+    },
+    titleText: {
+      [`@media only screen and (max-width: ${theme.screenSM})`]: {
+        display: 'none',
+      },
     },
     buttonContainer: {
       textAlign: 'right',
@@ -68,10 +76,15 @@ export const MainLayout: FunctionComponent<HookProps> = ({ children, title }) =>
           <Row justify="space-between">
             <Col>
               <Link href="/">
-                <h1 className={classes.titleContainer}>Commit-composer.dev</h1>
+                <h1 className={classes.titleContainer}>
+                  <span aria-label="Commit-composer" role="img">
+                    📝
+                  </span>{' '}
+                  <span className={classes.titleText}>Commit-composer</span>
+                </h1>
               </Link>
             </Col>
-            <Col className={classes.buttonContainer}>
+            <Col flex="auto" className={classes.buttonContainer}>
               <HeaderLinksComponent></HeaderLinksComponent>
             </Col>
           </Row>
