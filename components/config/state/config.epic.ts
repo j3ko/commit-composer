@@ -1,7 +1,7 @@
-import { EditorUpdatedAction } from 'components/editor/state/editor.action';
+import { EditorLoadAction, EditorUpdatedAction } from 'components/editor/state/editor.action';
 import { Epic } from 'redux-observable';
 import { PlainAction } from 'redux-typed-actions';
-import { concat, merge, of } from 'rxjs';
+import { concat, of } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { requestRuleset } from 'shared/api';
 import { AppState } from 'state';
@@ -20,7 +20,11 @@ export const updateConfig: Epic<PlainAction, PlainAction, AppState> = (action$, 
     ),
     switchMap((x) =>
       typeof x.payload === 'object' && x.payload.valid
-        ? merge(of(EditorUpdatedAction.strictGet(store$.value.editor.editorValue)), of(x))
+        ? concat(
+            of(EditorLoadAction.strictGet(true)),
+            of(EditorUpdatedAction.strictGet(store$.value.editor.editorValue)),
+            of(x),
+          )
         : of(x),
     ),
   );

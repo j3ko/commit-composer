@@ -55,19 +55,10 @@ class ConfigValidationComponent extends React.Component<Props, State> {
             icon: <BsXOctagon />,
           };
 
-      result = config.loading ? (
-        <Alert
-          message={'Loading...'}
-          icon={<AiOutlineLoading3Quarters className="spin" />}
-          showIcon
-          className={classNames(classes.root, {
-            [classes.open]: config.isOpen,
-          })}
-        />
-      ) : (
+      result = (
         <Alert
           {...props}
-          icon={props.icon}
+          icon={config.loading ? <AiOutlineLoading3Quarters className="spin" /> : props.icon}
           showIcon
           className={classNames(classes.root, {
             [classes.open]: config.isOpen,
