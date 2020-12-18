@@ -83,7 +83,7 @@ class EditorValidationComponent extends React.Component<Props, State> {
         <Alert
           message={typeMap[alertType].message}
           description={description}
-          type={alertType}
+          type={editor.loading ? 'info' : alertType}
           icon={
             editor.loading ? (
               <AiOutlineLoading3Quarters className="spin" />
