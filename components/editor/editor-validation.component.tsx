@@ -79,20 +79,18 @@ class EditorValidationComponent extends React.Component<Props, State> {
         },
       };
 
-      result = editor.loading ? (
-        <Alert
-          message={'Loading...'}
-          description={' '}
-          type={'info'}
-          icon={<AiOutlineLoading3Quarters className="spin" />}
-          showIcon
-        />
-      ) : (
+      result = (
         <Alert
           message={typeMap[alertType].message}
           description={description}
-          type={alertType}
-          icon={typeMap[alertType].icon}
+          type={editor.loading ? 'info' : alertType}
+          icon={
+            editor.loading ? (
+              <AiOutlineLoading3Quarters className="spin" />
+            ) : (
+              typeMap[alertType].icon
+            )
+          }
           showIcon
         />
       );
