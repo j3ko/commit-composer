@@ -70,6 +70,10 @@ export const MainLayout: FunctionComponent<HookProps> = ({ children, title }) =>
         <meta
           name="keywords"
           content="commit-composer, conventional commits, commitlint, git, commitizen"></meta>
+        <meta
+          name="google-site-verification"
+          content="nXBa4XO6AR0iHLCZ3_N-7zMpZJqUJN_nmq6Z4w3iiKM"
+        />
       </Head>
       <Layout className={classes.root}>
         <Header className={classes.header}>
