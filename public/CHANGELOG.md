@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.1.5](https://github.com/j3ko/commit-composer/compare/v0.1.4...v0.1.5) (2021-01-25)
+
+
+### Bug Fixes
+
+* **editor:** 🚸 fix loader experience ([#36](https://github.com/j3ko/commit-composer/issues/36)) ([b417912](https://github.com/j3ko/commit-composer/commit/b4179125d6e40fa058036eec76bcc09ac40ced75)), closes [#34](https://github.com/j3ko/commit-composer/issues/34)
+
 ### [0.1.4](https://github.com/j3ko/commit-composer/compare/v0.1.3...v0.1.4) (2020-12-05)
 
 
