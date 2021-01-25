@@ -19,7 +19,9 @@
     "deploy:staging": "npm run build:clean && npm run build:download:staging && npm run sls && npm run build:upload:staging",
     "build:upload:staging": "aws s3 sync .serverless s3://j3ko-serverless-state/commit-composer/staging/.serverless --delete",
     "build:download:staging": "aws s3 sync s3://j3ko-serverless-state/commit-composer/staging/.serverless .serverless --delete",
-    "release": "standard-version --commit-all --sign",
+    "release:major": "standard-version --commit-all --sign --release-as major",
+    "release:minor": "standard-version --commit-all --sign --release-as minor",
+    "release:patch": "standard-version --commit-all --sign --release-as patch",
     "postinstall": "patch-package --use-yarn",
     "build:clean": "shx rm -rf .next && shx rm -rf .serverless_nextjs && shx rm -rf .serverless && shx rm -rf ./serverless.yml",
     "build:reset": "npm run build:clean && shx rm -rf node_modules"
